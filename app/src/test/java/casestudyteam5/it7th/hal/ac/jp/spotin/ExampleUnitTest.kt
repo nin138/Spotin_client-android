@@ -2,7 +2,7 @@ package casestudyteam5.it7th.hal.ac.jp.spotin
 
 import org.junit.Test
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 
 /**
  * Example local unit test, which will execute on the development machine (host).

@@ -5,15 +5,20 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "gradle.plugin.org.jlleitschuh.gradle:ktlint-gradle:4.0.0"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
+apply plugin: "org.jlleitschuh.gradle.ktlint"
 
 allprojects {
     repositories {
@@ -24,4 +29,15 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ktlint {
+    debug = false
+    verbose = true
+    android = true
+    outputToConsole = true
+    reporters = ["PLAIN", "CHECKSTYLE"]
+    ignoreFailures = true
+    ruleSets = [
+    ]
 }
