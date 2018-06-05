@@ -1,10 +1,8 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin.data.source
 
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.Spot
-import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.local.SpotLocalDataSource
 
 class SpotRepository(val spotLocalDataSource: SpotDataSource) : SpotDataSource {
-
 
   override fun getSpot(loadSpotCallback: SpotDataSource.GetSpotCallback) {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates../
@@ -32,11 +30,9 @@ class SpotRepository(val spotLocalDataSource: SpotDataSource) : SpotDataSource {
   }
 
 
-
   companion object {
 
     private var INSTANCE: SpotRepository? = null
-
 
     @JvmStatic fun getInstance(spotLocalDataSource: SpotDataSource): SpotRepository {
       return INSTANCE ?: SpotRepository(spotLocalDataSource)
@@ -44,8 +40,5 @@ class SpotRepository(val spotLocalDataSource: SpotDataSource) : SpotDataSource {
     }
 
 
-    @JvmStatic fun destroyInstance() {
-      INSTANCE = null
-    }
   }
 }

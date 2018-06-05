@@ -14,7 +14,7 @@ import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotDao
 abstract class SpotDatabase: RoomDatabase(){
   abstract fun spotDao() :SpotDao
 
-  /*
+
   companion object {
 
     private var INSTANCE: SpotDatabase? = null
@@ -35,6 +35,6 @@ abstract class SpotDatabase: RoomDatabase(){
 
 
   }
-  */
+
 
 }
