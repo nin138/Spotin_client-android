@@ -2,13 +2,13 @@ package casestudyteam5.it7th.hal.ac.jp.spotin.data.source
 
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.Spot
 
-class SpotRepository(val spotLocalDataSource: SpotDataSource) : SpotDataSource {
+class SpotRepository(private val spotLocalDataSource: SpotDataSource) : SpotDataSource {
 
   override fun getSpot(loadSpotCallback: SpotDataSource.GetSpotCallback) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates../
+
     spotLocalDataSource.getSpot(object : SpotDataSource.GetSpotCallback{
       override fun loadSuccess(spotList: List<Spot>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        loadSpotCallback.loadSuccess(spotList)
       }
 
       override fun loadFailed() {
@@ -20,12 +20,11 @@ class SpotRepository(val spotLocalDataSource: SpotDataSource) : SpotDataSource {
   }
 
   override fun saveSpot(spot: Spot) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     spotLocalDataSource.saveSpot(spot)
+
   }
 
   override fun deleteSpot(spot: Spot) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     spotLocalDataSource.deleteSpot(spot)
   }
 

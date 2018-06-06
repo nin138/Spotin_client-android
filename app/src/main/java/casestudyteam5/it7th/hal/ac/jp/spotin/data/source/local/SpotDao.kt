@@ -1,4 +1,4 @@
-package casestudyteam5.it7th.hal.ac.jp.spotin.data.source
+package casestudyteam5.it7th.hal.ac.jp.spotin.data.source.local
 
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Delete

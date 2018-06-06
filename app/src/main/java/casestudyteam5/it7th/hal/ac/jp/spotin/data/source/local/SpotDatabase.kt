@@ -7,12 +7,11 @@ import android.arch.persistence.room.TypeConverters
 import android.content.Context
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.RoomConverter
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.Spot
-import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotDao
 
 @Database(entities = [Spot::class], version = 1)
 @TypeConverters(RoomConverter::class)
 abstract class SpotDatabase: RoomDatabase(){
-  abstract fun spotDao() :SpotDao
+  abstract fun spotDao() : SpotDao
 
 
   companion object {
