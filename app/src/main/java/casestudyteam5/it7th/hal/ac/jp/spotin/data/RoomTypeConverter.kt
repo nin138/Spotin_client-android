@@ -5,7 +5,7 @@ import android.net.Uri
 import java.text.SimpleDateFormat
 import java.util.*
 
-class RoomConverter{
+class RoomTypeConverter {
   @TypeConverter
   fun fromDate(value: String?): Date? {
     return if (value == null) null else SimpleDateFormat("yyyy/MM/dd hh:mm:ss").parse(value)
@@ -25,5 +25,4 @@ class RoomConverter{
   fun toUri(uri: Uri?): String? {
     return uri.toString()
   }
-
 }
