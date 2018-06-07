@@ -6,7 +6,7 @@ class SpotRepository(private val spotLocalDataSource: SpotDataSource) : SpotData
 
   override fun getSpot(loadSpotCallback: SpotDataSource.GetSpotCallback) {
 
-    spotLocalDataSource.getSpot(object : SpotDataSource.GetSpotCallback{
+    spotLocalDataSource.getSpot(object : SpotDataSource.GetSpotCallback {
       override fun loadSuccess(spotList: List<Spot>) {
         loadSpotCallback.loadSuccess(spotList)
       }
@@ -14,20 +14,20 @@ class SpotRepository(private val spotLocalDataSource: SpotDataSource) : SpotData
       override fun loadFailed() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
       }
-
     })
-
   }
 
   override fun saveSpot(spot: Spot) {
     spotLocalDataSource.saveSpot(spot)
+  }
 
+  override fun savaSpotList(spotList: List<Spot>) {
+    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 
   override fun deleteSpot(spot: Spot) {
     spotLocalDataSource.deleteSpot(spot)
   }
-
 
   companion object {
 
@@ -37,7 +37,5 @@ class SpotRepository(private val spotLocalDataSource: SpotDataSource) : SpotData
       return INSTANCE ?: SpotRepository(spotLocalDataSource)
         .apply { INSTANCE = this }
     }
-
-
   }
 }

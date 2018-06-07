@@ -8,18 +8,20 @@ import casestudyteam5.it7th.hal.ac.jp.spotin.data.Spot
 
 @Dao interface SpotDao {
   @Insert
-  fun insertRecord(spot: Spot)
+  fun insertSpot(spot: Spot)
 
   @Insert
-  fun insertAll(spotlist: List<Spot>)
+  fun insertSpotList(spotlist: List<Spot>)
 
   @Query("SELECT * FROM Spot")
-  fun record(): List<Spot>
+  fun getAllSpot(): List<Spot>
+
+  @Query ("SELECT * FROM Spot WHERE prace_id = (:prace_id)")
+  fun getSpot(prace_id: String): Spot
 
   @Delete
-  fun deletRecord(spot: Spot) //主キーで検索して削除
+  fun deletSpot(spot: Spot) //主キーで検索して削除
 
   //@Query("DELETE FROM Spot where imagepass = imagepass ") //条件
   //fun deleteImageRecord(imagepass : String)
-
 }

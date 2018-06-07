@@ -4,9 +4,8 @@ import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 //ローカルデータベース用非同期処理クラス
-class LocalExecutor: Executor{
+class LocalExecutor : Executor {
   //スレッドの生成
   val createThread = Executors.newSingleThreadExecutor()
-  override fun execute(command: Runnable?) {createThread.execute(command)}
-
+  override fun execute(command: Runnable?) { createThread.execute(command) }
 }

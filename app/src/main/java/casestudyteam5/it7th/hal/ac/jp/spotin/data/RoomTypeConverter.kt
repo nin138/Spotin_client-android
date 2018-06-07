@@ -3,7 +3,7 @@ package casestudyteam5.it7th.hal.ac.jp.spotin.data
 import android.arch.persistence.room.TypeConverter
 import android.net.Uri
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 class RoomTypeConverter {
   @TypeConverter

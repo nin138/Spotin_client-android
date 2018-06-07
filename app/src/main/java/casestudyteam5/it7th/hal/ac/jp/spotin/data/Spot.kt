@@ -7,11 +7,14 @@ import android.net.Uri
 import java.util.Date
 
 @Entity
-class Spot(@ColumnInfo var imagepass: Uri?,
-           @ColumnInfo var comment: String = "",
-           @ColumnInfo var place: String = "",
-           @ColumnInfo var date: Date){
-  @PrimaryKey(autoGenerate = true) var id: Int= 0
+class Spot(
+  @ColumnInfo var imagepass: Uri?,
+  @ColumnInfo var comment: String = "",
+  @ColumnInfo var place: String = "",
+  @ColumnInfo var date: Date
+) {
+  @PrimaryKey(autoGenerate = true) var id: Int = 0
+  var prace_id: String = ""
 
   val isEmpty
     get() = comment.isEmpty() && place.isEmpty()

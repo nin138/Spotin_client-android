@@ -14,6 +14,8 @@ interface SpotDataSource {
 
   fun saveSpot(spot: Spot)
 
+  fun savaSpotList(spotList: List<Spot>)
+
   fun deleteSpot(spot: Spot)
 
   //fun deleteSpotImage(imagepass: String)
