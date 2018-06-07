@@ -2,20 +2,17 @@ package casestudyteam5.it7th.hal.ac.jp.spotin.data
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
-import android.net.Uri
 import java.util.Date
 
-@Entity
+@Entity(primaryKeys = arrayOf("place_id", "image_pass"))
 class Spot(
-  @ColumnInfo var imagepass: Uri?,
-  @ColumnInfo var comment: String = "",
-  @ColumnInfo var place: String = "",
-  @ColumnInfo var date: Date
+  @ColumnInfo(name = "place_id") var place_id: String = "",
+  @ColumnInfo(name = "image_pass") var imagepass: String = "",
+  @ColumnInfo(name = "comment") var comment: String = "",
+  @ColumnInfo(name = "place_name") var place_name: String = "",
+  @ColumnInfo(name = "date") var date: Date
 ) {
-  @PrimaryKey(autoGenerate = true) var id: Int = 0
-  var prace_id: String = ""
 
   val isEmpty
-    get() = comment.isEmpty() && place.isEmpty()
+    get() = comment.isEmpty() && place_name.isEmpty()
 }

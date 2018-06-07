@@ -16,7 +16,7 @@ import casestudyteam5.it7th.hal.ac.jp.spotin.data.Spot
   @Query("SELECT * FROM Spot")
   fun getAllSpot(): List<Spot>
 
-  @Query ("SELECT * FROM Spot WHERE prace_id = (:prace_id)")
+  @Query ("SELECT * FROM Spot WHERE place_id = (:prace_id)")
   fun getSpot(prace_id: String): Spot
 
   @Delete
