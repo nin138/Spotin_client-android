@@ -20,9 +20,9 @@ import java.util.Date
   @Query("SELECT * FROM travel_record INNER JOIN spot_image ON travel_record.place_id ")
   fun getAllSpot(): List<TravelRecord>
 
-  @Query ("SELECT * FROM travel_record" +
-    "INNER JOIN spot_image ON travel_record.place_id = spot_image.place_id" +
-    " WHERE travel_record.place_id = (:place_id)")
+  @Query ("SELECT * FROM travel_record " +
+    "INNER JOIN spot_image ON travel_record.place_id = spot_image.place_id " +
+    "WHERE travel_record.place_id = (:place_id)")
   fun getSpotPlace(place_id: String): TravelRecord?
 
   @Query("SELECT * FROM travel_record INNER JOIN spot_image ON travel_record.place_id WHERE date = (:date)")

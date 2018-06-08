@@ -23,7 +23,7 @@ abstract class SpotDatabase : RoomDatabase() {
       synchronized(lock) {
         if (INSTANCE == null) {
           //データベースの作成
-          INSTANCE = Room.databaseBuilder(context.applicationContext, SpotDatabase::class.java, "Stop.db").build()
+          INSTANCE = Room.databaseBuilder(context.applicationContext, SpotDatabase::class.java, "Spot.db").build()
         }
         return INSTANCE!!
       }
