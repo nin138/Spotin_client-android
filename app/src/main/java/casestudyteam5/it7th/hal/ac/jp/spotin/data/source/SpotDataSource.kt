@@ -1,22 +1,30 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin.data.source
 
-import casestudyteam5.it7th.hal.ac.jp.spotin.data.Spot
+import casestudyteam5.it7th.hal.ac.jp.spotin.data.TravelRecord
+import java.util.Date
 
 interface SpotDataSource {
+  interface LoadSpotCallback {
+    fun onLoadSuccess(travelRecordList: List<TravelRecord>)
+
+    fun onLoadFailed()
+  }
   interface GetSpotCallback {
-
-    fun loadSuccess(spotList: List<Spot>)
-
-    fun loadFailed()
+    fun onGetSpot(spot: TravelRecord)
+    fun onGetFailedSpot()
   }
 
-  fun getSpot(loadSpotCallback: GetSpotCallback)
+  fun getAllSpot(loadSpotCallback: LoadSpotCallback)
 
-  fun saveSpot(spot: Spot)
+  fun getSpotDate(date: Date, loadSpotCallback: LoadSpotCallback)
 
-  fun savaSpotList(spotList: List<Spot>)
+  fun getSpotPlace(place_id: String, getSpotCallback: GetSpotCallback)
 
-  fun deleteSpot(spot: Spot)
+  fun saveSpot(travelRecord: TravelRecord)
 
-  //fun deleteSpotImage(imagepass: String)
+  fun addSpotImage(spotimageList: List<TravelRecord.SpotImage>)
+
+  fun deleteSpot(travelRecord: TravelRecord)
+
+  fun deleteSpotImage(imagepass: String)
 }
