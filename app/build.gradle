@@ -4,10 +4,6 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-def GOOGLE_MAP_API_KEY = '"' + GoogleMapApiKey + '"' ?: '"Have you configred GOOGLE_MAP_API_KEY"'
-def STRING = 'String'
-def BOOLEAN = 'boolean'
-
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -17,9 +13,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        each { type ->
-            type.buildConfigField STRING, 'GoogleMapApiKey',GOOGLE_MAP_API_KEY
-        }
     }
     buildTypes {
         release {

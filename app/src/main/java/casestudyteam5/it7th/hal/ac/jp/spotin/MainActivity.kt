@@ -1,8 +1,6 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.google.android.gms.maps.MapFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.LatLng
@@ -10,12 +8,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.OnMapReadyCallback
 import android.support.v4.app.FragmentActivity
-import com.google.android.gms.location.places.PlaceLikelihood
-import com.google.android.gms.location.places.PlaceLikelihoodBuffer
-import com.google.android.gms.location.places.Places
-
-
-
 
 class MainActivity : FragmentActivity(), OnMapReadyCallback {
 
@@ -28,7 +20,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback {
     val mapFragment = supportFragmentManager
       .findFragmentById(R.id.map) as SupportMapFragment
     mapFragment.getMapAsync(this)
-
   }
 
   override fun onMapReady(googleMap: GoogleMap) {
