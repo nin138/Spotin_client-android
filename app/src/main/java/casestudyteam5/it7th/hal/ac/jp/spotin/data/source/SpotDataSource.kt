@@ -5,12 +5,12 @@ import java.util.Date
 
 interface SpotDataSource {
   interface LoadSpotCallback {
-    fun onLoadSuccess(travelRecordList: List<TravelRecord>)
+    fun onLoadSuccess(travelRecordList: List<SpotStore>)
 
     fun onLoadFailed()
   }
   interface GetSpotCallback {
-    fun onGetSpot(spot: TravelRecord)
+    fun onGetSpot(spot: SpotStore)
     fun onGetFailedSpot()
   }
 

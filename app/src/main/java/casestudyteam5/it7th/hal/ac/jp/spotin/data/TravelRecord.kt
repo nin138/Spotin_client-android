@@ -23,8 +23,9 @@ class TravelRecord(
     childColumns = arrayOf("image_pass"),
     onDelete = ForeignKey.CASCADE))))
   data class SpotImage(
-    @PrimaryKey(autoGenerate = true) var id: Int,
     @ColumnInfo var place_id: String?,
     @ColumnInfo var image_pass: String? = null
-  )
+  ) {
+    @PrimaryKey(autoGenerate = true) var id: Int = 0
+  }
 }
