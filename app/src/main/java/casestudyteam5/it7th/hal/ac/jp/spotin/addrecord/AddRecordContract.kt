@@ -4,12 +4,14 @@ import android.net.Uri
 
 interface AddRecordContract {
   interface View {
-    var isUpdate: Boolean
+    val isUpdate: Boolean
     fun addImageList(imagepass: Uri)
     fun showImage(imagepass: Uri)
     fun editComment()
     fun showEmpryError()
     fun showPlace(place: String)
+    fun cancel()
+    fun decision()
   }
   interface Presenter {
     fun saveRecord()
