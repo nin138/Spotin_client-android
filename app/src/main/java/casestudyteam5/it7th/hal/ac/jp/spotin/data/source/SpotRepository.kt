@@ -49,6 +49,10 @@ class SpotRepository(val spotDao: SpotDao, val appExecutor: AppExecutor) : SpotD
     appExecutor.localExecutor.execute { spotDao.insertSpot(travelRecord) }
   }
 
+  override fun upDataSpot(travelRecord: TravelRecord) {
+    appExecutor.localExecutor.execute { spotDao.upDataSpot(travelRecord) }
+  }
+
   override fun addSpotImage(spotimageList: List<TravelRecord.SpotImage>) {
     appExecutor.localExecutor.execute { spotDao.addSpotImage(spotimageList) }
   }

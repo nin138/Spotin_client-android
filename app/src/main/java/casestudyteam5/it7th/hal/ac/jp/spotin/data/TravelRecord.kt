@@ -20,7 +20,7 @@ class TravelRecord(
   @Entity(tableName = "spot_image",
     foreignKeys = (arrayOf(ForeignKey(entity = TravelRecord::class,
     parentColumns = arrayOf("place_id"),
-    childColumns = arrayOf("image_pass"),
+    childColumns = arrayOf("place_id"),
     onDelete = ForeignKey.CASCADE))))
   data class SpotImage(
     @ColumnInfo var place_id: String?,

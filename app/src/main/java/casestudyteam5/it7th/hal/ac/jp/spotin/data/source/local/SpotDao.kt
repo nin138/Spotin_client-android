@@ -1,9 +1,10 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin.data.source.local
 
 import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
+import android.arch.persistence.room.Update
 import android.arch.persistence.room.Query
+import android.arch.persistence.room.Delete
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.TravelRecord
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotStore
 import java.util.Date
@@ -17,6 +18,9 @@ import java.util.Date
 
   @Insert
   fun addSpotImage(spotimageList: List<TravelRecord.SpotImage>)
+
+  @Update
+  fun upDataSpot(travelRecord: TravelRecord)
 
   @Query("SELECT * FROM travel_record INNER JOIN spot_image ON travel_record.place_id = spot_image.place_id ")
   fun getAllSpot(): List<SpotStore>

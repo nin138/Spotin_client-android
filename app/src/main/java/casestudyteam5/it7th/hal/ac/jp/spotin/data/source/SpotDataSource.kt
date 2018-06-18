@@ -24,6 +24,8 @@ interface SpotDataSource {
 
   fun addSpotImage(spotimageList: List<TravelRecord.SpotImage>)
 
+  fun upDataSpot(travelRecord: TravelRecord)
+
   fun deleteSpot(travelRecord: TravelRecord)
 
   fun deleteSpotImage(imagepass: String)
