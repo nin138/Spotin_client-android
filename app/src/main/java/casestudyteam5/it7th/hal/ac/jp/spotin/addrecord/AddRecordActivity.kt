@@ -11,19 +11,19 @@ import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.view.View
-
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
+import casestudyteam5.it7th.hal.ac.jp.spotin.data.DBFactory
 
 class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
 
   lateinit var image: ImageView
   lateinit var presenter: AddRecordPresenter
-  lateinit var place_id: String
-  lateinit var place_name: String
+  val place_id: String by lazy { intent.extras.getString("place_id") }
+  val place_name: String by lazy { intent.extras.getString("place_name") }
   var comment: String = ""
   private var imageUri: Uri? = null
   override var imagepassList: List<Uri> = listOf()
@@ -31,11 +31,10 @@ class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_add_record)
-    intent.extras.getString("place_id")?.let { this.place_id = it }
-    intent.extras.getString("place_name")?.let { this.place_name = it }
+
     //Create Presenter
     //TODO:Repositoryのインスタンスを渡す
-    presenter = AddRecordPresenter(this)
+    presenter = AddRecordPresenter(this, DBFactory.provideSpotRepository(this))
     val chooseBtn: Button = findViewById(R.id.takeImage)
     chooseBtn.setOnClickListener {
       //permission確認後カメラ起動
@@ -129,6 +128,7 @@ class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
     if (this.comment.isEmpty() && this.imageUri == null) {
       showEmpryError()
     } else {
+
       presenter.saveRecord(this.place_id, this.comment, this.place_name, this.imagepassList)
       finish()
     }

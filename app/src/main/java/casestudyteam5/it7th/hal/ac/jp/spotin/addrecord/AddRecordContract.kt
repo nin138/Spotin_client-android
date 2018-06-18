@@ -18,12 +18,12 @@ interface AddRecordContract {
     fun decision()
   }
   interface Presenter {
-    fun saveRecord(place_id: String, comment: String?, place_name: String, imagepassList: List<Uri>?)
+    fun saveRecord(place_id: String, comment: String, place_name: String, imagepassList: List<Uri>?)
     fun getcameraUri(context: Context): Uri
-    fun editImageList(imagepass: Uri): List<Uri>
-    fun createTravelRecord(place_id: String, comment: String?, place_name: String, date: Date)
-    fun createImageRecord(imagepassList: List<Uri>)
-    fun updateTravelRecord(place_id: String, comment: String?, place_name: String)
-    fun updateImageRecord(imagepassList: List<Uri>)
+    fun editImageList(imagepass: Uri): List<Uri>//表示用
+    fun createTravelRecord(place_id: String, comment: String, place_name: String, date: Date)
+    fun createImageRecord(place_id: String, imagepassList: List<Uri>)
+    fun updataTravelRecord(place_id: String, comment: String, place_name: String, date: Date)
+    fun updataImageRecord(place_id: String, imagepassList: List<Uri>)
   }
 }
