@@ -9,8 +9,7 @@ data class SpotData(
   var spotImgs: Array<String>
 )
 
-
-data class SpotDatas(val spotDatas: List<SpotData>){
+data class SpotDatas(val spotDatas: List<SpotData>) {
   companion object {
       fun of(vararg spotDatas: SpotData) = SpotDatas(listOf(*spotDatas))
   }
