@@ -24,9 +24,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
   override fun onMapReady(map: GoogleMap?) {
     this.map = map
+    map!!.isIndoorEnabled = false
     val tokyo = LatLng(35.681167, 139.767052)
-    map!!.addMarker(MarkerOptions().position(tokyo).title("Marker in TokyoStation"))
+    map.addMarker(MarkerOptions().position(tokyo).title("Marker in TokyoStation"))
     map.moveCamera(CameraUpdateFactory.newLatLng(tokyo))
+    map.moveCamera(CameraUpdateFactory.zoomTo(15f))
   }
-
 }

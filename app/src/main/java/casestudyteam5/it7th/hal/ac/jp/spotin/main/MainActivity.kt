@@ -7,9 +7,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
 import casestudyteam5.it7th.hal.ac.jp.spotin.map.MapActivity
 
-
 class MainActivity : FragmentActivity() {
-
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -20,5 +18,4 @@ class MainActivity : FragmentActivity() {
       startActivity(intent)
     }
   }
-
 }
