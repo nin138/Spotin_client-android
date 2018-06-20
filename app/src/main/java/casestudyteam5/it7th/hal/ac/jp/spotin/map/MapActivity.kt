@@ -23,7 +23,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
   var map: GoogleMap? = null
 
   private fun startGPS() {
-    GPS(this).startListening(listener = object : LocationListener {
+    GPS(this).listen(object : LocationListener {
       override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
       }
@@ -44,7 +44,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
   }
 
   private fun onLocationUpdated(location: Location) {
+    //TODO マーカーを差分のみアップデート
     map?.animateCamera(CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude)))
+    //TODO 現在地
     setSpotsToMap("restaurant", location.latitude, location.longitude)
   }
 
@@ -74,7 +76,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
       val spots = SpotApi().getSpotList(category, lat.toString(), lng.toString())
       println("len=" + spots.spot.size)
       spots.spot.forEach {
-        println(it.name)
         map?.addMarker(MarkerOptions().position(LatLng(it.lat.toDouble(), it.lng.toDouble())).title(it.name))
       }
     }
