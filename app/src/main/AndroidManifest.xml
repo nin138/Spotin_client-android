@@ -36,7 +36,7 @@
       android:value="APIキー" />
 
     <activity android:name=".list.ListActivity" />
-    <activity android:name=".TravelRecordListActivity" />
+    <activity android:name=".records.TravelRecordListActivity" />
     <activity android:name=".map.MapActivity" />
     <activity android:name=".addrecord.AddRecordActivity"></activity>
   </application>

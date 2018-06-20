@@ -1,9 +1,11 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin.records
 
+import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotStore
+
 interface RecordListContract {
 
   interface View {
-    fun showList()
+    fun showList(list: List<SpotStore>)
     fun showSortMonth()
     fun showSortDays()
     fun deleteRecord()
@@ -13,12 +15,10 @@ interface RecordListContract {
   }
 
   interface Presenter {
-    // TODO: fun loadList(list: List<SpotSrore>)
-    // TODO: fun loadSortMonth(list: List<SpotStore>)
-    // TODO: fun loadSortDays(list: List<SpotStore>)
-    // TODO: fun openDetail(spot: SpotStore)
+    fun loadList()
+    fun openDetail(spot: SpotStore)
     fun sortList(recordSortType: RecordSortType)
     fun deleteTravelRecord(place_id: String)
-    fun loadTravelList()
+
   }
 }

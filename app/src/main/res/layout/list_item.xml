@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
+    card_view:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/recordItemDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="day" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/recordItemPlace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PlaceName" />
+
+            <ImageView
+                android:id="@+id/recordItemImage"
+                android:layout_width="match_parent"
+                android:layout_height="146dp"
+                app:srcCompat="@mipmap/ic_launcher_round" />
+
+            <TextView
+
+                android:id="@+id/recordItemComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="comment" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
