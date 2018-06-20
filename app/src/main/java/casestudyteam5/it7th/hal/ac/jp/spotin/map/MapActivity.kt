@@ -2,8 +2,11 @@ package casestudyteam5.it7th.hal.ac.jp.spotin.map
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.SpotApi
+import casestudyteam5.it7th.hal.ac.jp.spotin.service.gps.GPS
+import casestudyteam5.it7th.hal.ac.jp.spotin.util.PermissionUtil
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -23,6 +26,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     val mapFragment = supportFragmentManager
       .findFragmentById(R.id.map) as SupportMapFragment
     mapFragment.getMapAsync(this)
+    PermissionUtil.requestPermission(this, GPS.PERMISSION, GPS.REQUEST_CODE, "REQUIRE PERMISSION GPS ", "msg" )
   }
 
   override fun onMapReady(map: GoogleMap?) {
@@ -41,6 +45,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
       spots.spot.forEach {
         map?.addMarker(MarkerOptions().position(LatLng(it.lat.toDouble(), it.lng.toDouble())).title(it.name))
       }
+    }
+  }
+
+  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    if (requestCode == GPS.REQUEST_CODE) {
+      Toast.makeText(this, (grantResults[0] == 0).toString(), Toast.LENGTH_SHORT).show()
     }
   }
 }
