@@ -4,3 +4,8 @@
 ## lint
 - win`gradlew ktlintCheck` or `gradlew ktlintFormat` 
 - others `./gradlew ktlintCheck` or `gradlew ktlintFormat`
+## env
+- place `app/src/main/assets/env`
+```
+GOOGLE_MAP_API_KEY=YOUR_API_KEY
+```
