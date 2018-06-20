@@ -6,6 +6,6 @@ data class SpotStore(
   var place_id: String = "",
   var comment: String = "",
   var place_name: String = "",
-  var date: Date? = null,
+  var date: Date,
   var image_pass: String? = ""
 )
