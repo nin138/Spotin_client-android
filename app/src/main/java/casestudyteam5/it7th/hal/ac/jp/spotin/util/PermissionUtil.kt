@@ -34,15 +34,13 @@ class PermissionUtil {
       reasonTitle: String,
       reason: String
     ) {
-
-      if (!isPermissionGranted(activity, permission)) {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
-          showAlertDialog(activity, reasonTitle, reason,
-            DialogInterface.OnClickListener { _, _ ->
-              ActivityCompat.requestPermissions(activity, arrayOf(permission), requestCode)
-            })
-        }
+      fun requestPermission() {
+        ActivityCompat.requestPermissions(activity, arrayOf(permission), requestCode)
       }
+      if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
+        showAlertDialog(activity, reasonTitle, reason,
+          DialogInterface.OnClickListener { _, _ -> requestPermission() })
+      } else requestPermission()
     }
     fun requestPermission(
       fragment: Fragment,
@@ -51,14 +49,17 @@ class PermissionUtil {
       reasonTitle: String,
       reason: String
     ) {
+      fun requestPermission() {
+        fragment.requestPermissions(arrayOf(permission), requestCode)
+      }
       val context = fragment.requireContext()
       if (!isPermissionGranted(context, permission)) {
         if (fragment.shouldShowRequestPermissionRationale(permission)) {
           showAlertDialog(context, reasonTitle, reason,
             DialogInterface.OnClickListener { _, _ ->
-              fragment.requestPermissions(arrayOf(permission), requestCode)
+              requestPermission()
             })
-        }
+        } else requestPermission()
       }
     }
   }

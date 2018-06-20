@@ -1,8 +1,10 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin.map
 
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.SpotApi
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.gps.GPS
@@ -20,13 +22,41 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
   var map: GoogleMap? = null
 
+  private fun startGPS() {
+    GPS(this).startListening(listener = object : LocationListener {
+      override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+      }
+
+      override fun onProviderEnabled(p0: String?) {
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+      }
+
+      override fun onProviderDisabled(p0: String?) {
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+      }
+
+      override fun onLocationChanged(location: Location?) {
+        println("location: " + location?.latitude.toString() + "," + location?.longitude)
+        if (location != null) onLocationUpdated(location)
+      }
+    })
+  }
+
+  private fun onLocationUpdated(location: Location) {
+    map?.animateCamera(CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude)))
+    setSpotsToMap("restaurant", location.latitude, location.longitude)
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_map)
     val mapFragment = supportFragmentManager
       .findFragmentById(R.id.map) as SupportMapFragment
     mapFragment.getMapAsync(this)
-    PermissionUtil.requestPermission(this, GPS.PERMISSION, GPS.REQUEST_CODE, "REQUIRE PERMISSION GPS ", "msg" )
+    println(PermissionUtil.isPermissionGranted(this, GPS.PERMISSION).toString())
+    if (PermissionUtil.isPermissionGranted(this, GPS.PERMISSION)) startGPS()
+    else PermissionUtil.requestPermission(this, GPS.PERMISSION, GPS.REQUEST_CODE, "REQUIRE PERMISSION GPS ", "msg" )
   }
 
   override fun onMapReady(map: GoogleMap?) {
@@ -35,14 +65,16 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     val tokyo = LatLng(35.681167, 139.767052)
     map.moveCamera(CameraUpdateFactory.newLatLng(tokyo))
     map.moveCamera(CameraUpdateFactory.zoomTo(15f))
-    setSpotsToMap("restaulant", "35.681167", "139.767052")
+    setSpotsToMap("restaurant", 35.681167, 139.767052)
   }
 
-  private fun setSpotsToMap(category: String, lat: String, lng: String) {
+  private fun setSpotsToMap(category: String, lat: Double, lng: Double) {
     val map = this.map
     launch(UI) {
-      val spots = SpotApi().getSpotList(category, lat, lng)
+      val spots = SpotApi().getSpotList(category, lat.toString(), lng.toString())
+      println("len=" + spots.spot.size)
       spots.spot.forEach {
+        println(it.name)
         map?.addMarker(MarkerOptions().position(LatLng(it.lat.toDouble(), it.lng.toDouble())).title(it.name))
       }
     }
@@ -50,8 +82,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
   override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    if (requestCode == GPS.REQUEST_CODE) {
-      Toast.makeText(this, (grantResults[0] == 0).toString(), Toast.LENGTH_SHORT).show()
-    }
+    if (requestCode == GPS.REQUEST_CODE &&
+      grantResults.isNotEmpty() &&
+      grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+      startGPS()
+    } else finish()
   }
 }
