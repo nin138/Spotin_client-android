@@ -2,6 +2,7 @@ package casestudyteam5.it7th.hal.ac.jp.spotin.map
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import android.location.LocationListener
 import android.support.v7.app.AppCompatActivity
@@ -15,10 +16,12 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.Circle
+import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
@@ -31,6 +34,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerC
   private var markerList: List<MarkerData> = listOf()
   private var yourMarker: Marker? = null
   private var gps: GPS? = null
+  private var range: Circle? = null
 
   private fun startGPS() {
     println("\n\n\n\ngps listen")
@@ -69,14 +73,21 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerC
   }
 
   private fun onLocationUpdated(location: Location) {
+    val position = LatLng(location.latitude, location.longitude)
     //TODO マーカーを差分のみアップデート
     map?.animateCamera(CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude)))
     //TODO 現在地
     yourMarker?.remove()
     yourMarker = map?.addMarker(MarkerOptions()
         .icon(BitmapDescriptorFactory.fromResource(R.drawable.a))
-        .position(LatLng(location.latitude, location.longitude)))
-
+        .position(position))
+    range?.remove()
+    range = map?.addCircle(CircleOptions()
+      .center(position)
+      .radius(200.0)
+      .strokeColor(Color.BLACK)
+      .strokeWidth(5f)
+      .fillColor(0x30ff0000))
     setSpotsToMap("restaurant", location.latitude, location.longitude)
   }
 
