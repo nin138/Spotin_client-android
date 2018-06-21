@@ -8,6 +8,12 @@
     tools:context=".addrecord.AddRecordActivity">
 
 
+    <TextView
+        android:id="@+id/placeName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

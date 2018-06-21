@@ -8,8 +8,14 @@
     tools:context=".main.MainActivity">
   <TextView
     android:id="@+id/to_map"
-    android:text="to map"
+    android:text="map表示"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />
+
+  <TextView
+      android:id="@+id/to_list"
+      android:text="リスト表示"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -14,7 +14,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
+
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.DBFactory
 
@@ -31,6 +33,8 @@ class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_add_record)
+    val placeName: TextView = findViewById(R.id.placeName)
+    placeName.text = place_name
 
     //Create Presenter
     //TODO:Repositoryのインスタンスを渡す
@@ -128,8 +132,8 @@ class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
     if (this.comment.isEmpty() && this.imageUri == null) {
       showEmpryError()
     } else {
-
       presenter.saveRecord(this.place_id, this.comment, this.place_name, this.imagepassList)
+      Toast.makeText(this, "success", Toast.LENGTH_SHORT).show()
       finish()
     }
   }

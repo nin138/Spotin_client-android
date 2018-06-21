@@ -90,7 +90,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerC
     map.isIndoorEnabled = false
     val tokyo = LatLng(35.681167, 139.767052)
     map.moveCamera(CameraUpdateFactory.newLatLng(tokyo))
-    map.moveCamera(CameraUpdateFactory.zoomTo(15f))
+    map.moveCamera(CameraUpdateFactory.zoomTo(17f))
     setSpotsToMap("restaurant", 35.681167, 139.767052)
   }
 
