@@ -4,8 +4,13 @@
 ## lint
 - win`gradlew ktlintCheck` or `gradlew ktlintFormat` 
 - others `./gradlew ktlintCheck` or `gradlew ktlintFormat`
-## env
-- place `app/src/main/assets/env`
+## API_KEY
+- place `app/src/main/AndroidManifest`
 ```
-GOOGLE_MAP_API_KEY=YOUR_API_KEY
+<meta-data
+      android:name="com.google.android.maps.v2.API_KEY"
+      android:value="APIキー" />
+```
+```
+APIキー=YOUR_API_KEY
 ```
