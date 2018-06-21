@@ -15,6 +15,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
@@ -65,6 +66,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerC
     //TODO マーカーを差分のみアップデート
     map?.animateCamera(CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude)))
     //TODO 現在地
+    map?.addMarker(MarkerOptions()
+        .icon(BitmapDescriptorFactory.fromResource(R.drawable.a))
+        .position(LatLng(location.latitude, location.longitude)))
+
     setSpotsToMap("restaurant", location.latitude, location.longitude)
   }
 
