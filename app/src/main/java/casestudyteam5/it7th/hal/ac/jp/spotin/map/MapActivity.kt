@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 
@@ -27,10 +28,15 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerC
   data class MarkerData(val spot: SpotApi.Spot, val marker: Marker)
 
   var map: GoogleMap? = null
-  var markerList: List<MarkerData> = listOf()
+  private var markerList: List<MarkerData> = listOf()
+  private var yourMarker: Marker? = null
+  private var gps: GPS? = null
 
   private fun startGPS() {
-    GPS(this).listen(object : LocationListener {
+    println("\n\n\n\ngps listen")
+    val location = gps?.getLastLocation()
+    if (location != null) onLocationUpdated(location)
+    gps?.listen(object : LocationListener {
       override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
       }
@@ -44,7 +50,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerC
       }
 
       override fun onLocationChanged(location: Location?) {
-        println("location: " + location?.latitude.toString() + "," + location?.longitude)
+        println("\n\n\n\n\nlocation: " + location?.latitude.toString() + "," + location?.longitude)
         if (location != null) onLocationUpdated(location)
       }
     })
@@ -66,7 +72,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerC
     //TODO マーカーを差分のみアップデート
     map?.animateCamera(CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude)))
     //TODO 現在地
-    map?.addMarker(MarkerOptions()
+    yourMarker?.remove()
+    yourMarker = map?.addMarker(MarkerOptions()
         .icon(BitmapDescriptorFactory.fromResource(R.drawable.a))
         .position(LatLng(location.latitude, location.longitude)))
 
@@ -80,29 +87,42 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerC
       .findFragmentById(R.id.map) as SupportMapFragment
     mapFragment.getMapAsync(this)
     println(PermissionUtil.isPermissionGranted(this, GPS.PERMISSION).toString())
+  }
+
+  override fun onResume() {
+    super.onResume()
+    gps = GPS(this)
     if (PermissionUtil.isPermissionGranted(this, GPS.PERMISSION)) startGPS()
     else PermissionUtil.requestPermission(this, GPS.PERMISSION, GPS.REQUEST_CODE, "REQUIRE PERMISSION GPS ", "msg" )
+  }
+  override fun onPause() {
+    super.onPause()
+    gps?.stop()
   }
 
   override fun onMapReady(map: GoogleMap) {
     this.map = map
     map.setOnMarkerClickListener(this)
     map.isIndoorEnabled = false
-    val tokyo = LatLng(35.681167, 139.767052)
-    map.moveCamera(CameraUpdateFactory.newLatLng(tokyo))
-    map.moveCamera(CameraUpdateFactory.zoomTo(15f))
-    setSpotsToMap("restaurant", 35.681167, 139.767052)
+    map.moveCamera(CameraUpdateFactory.zoomTo(17f))
   }
 
   private fun setSpotsToMap(category: String, lat: Double, lng: Double) {
     val map = this.map
-    launch(UI) {
+    launch(CommonPool) {
       val spots = SpotApi().getSpotList(category, lat.toString(), lng.toString())
       println("len=" + spots.spot.size)
-      spots.spot.forEach {
-        val marker = map?.addMarker(
-          MarkerOptions().position(LatLng(it.lat.toDouble(), it.lng.toDouble())).title(it.name))
-        if (marker != null) markerList = markerList.plus(MarkerData(spot = it, marker = marker))
+      launch(UI) {
+        val newList: MutableList<MarkerData> = mutableListOf()
+        markerList.forEach {
+          it.marker.remove()
+        }
+        spots.spot.forEach {
+          val marker = map?.addMarker(
+            MarkerOptions().position(LatLng(it.lat.toDouble(), it.lng.toDouble())).title(it.name))
+          if (marker != null) newList.add(MarkerData(spot = it, marker = marker))
+        }
+        markerList = newList
       }
     }
   }
