@@ -1,11 +1,13 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin.map
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
+import casestudyteam5.it7th.hal.ac.jp.spotin.addrecord.AddRecordActivity
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.SpotApi
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.gps.GPS
 import casestudyteam5.it7th.hal.ac.jp.spotin.util.PermissionUtil
@@ -14,13 +16,17 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+
+  data class MarkerData(val spot: SpotApi.Spot, val marker: Marker)
 
   var map: GoogleMap? = null
+  var markerList: List<MarkerData> = listOf()
 
   private fun startGPS() {
     GPS(this).listen(object : LocationListener {
@@ -43,6 +49,18 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     })
   }
 
+  override fun onMarkerClick(marker: Marker?): Boolean {
+    markerList.forEach {
+      if (it.marker == marker) {
+        val intent = Intent(this, AddRecordActivity::class.java)
+        intent.putExtra("place_id", it.spot.place_id)
+        intent.putExtra("place_name", it.spot.name)
+        startActivity(intent)
+      }
+    }
+    return false
+  }
+
   private fun onLocationUpdated(location: Location) {
     //TODO マーカーを差分のみアップデート
     map?.animateCamera(CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude)))
@@ -61,9 +79,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     else PermissionUtil.requestPermission(this, GPS.PERMISSION, GPS.REQUEST_CODE, "REQUIRE PERMISSION GPS ", "msg" )
   }
 
-  override fun onMapReady(map: GoogleMap?) {
+  override fun onMapReady(map: GoogleMap) {
     this.map = map
-    map!!.isIndoorEnabled = false
+    map.setOnMarkerClickListener(this)
+    map.isIndoorEnabled = false
     val tokyo = LatLng(35.681167, 139.767052)
     map.moveCamera(CameraUpdateFactory.newLatLng(tokyo))
     map.moveCamera(CameraUpdateFactory.zoomTo(15f))
@@ -76,7 +95,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
       val spots = SpotApi().getSpotList(category, lat.toString(), lng.toString())
       println("len=" + spots.spot.size)
       spots.spot.forEach {
-        map?.addMarker(MarkerOptions().position(LatLng(it.lat.toDouble(), it.lng.toDouble())).title(it.name))
+        val marker = map?.addMarker(
+          MarkerOptions().position(LatLng(it.lat.toDouble(), it.lng.toDouble())).title(it.name))
+        if (marker != null) markerList = markerList.plus(MarkerData(spot = it, marker = marker))
       }
     }
   }
