@@ -6,6 +6,7 @@ import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
 import casestudyteam5.it7th.hal.ac.jp.spotin.map.MapActivity
+import casestudyteam5.it7th.hal.ac.jp.spotin.records.TravelRecordListActivity
 
 class MainActivity : FragmentActivity() {
 
@@ -15,6 +16,11 @@ class MainActivity : FragmentActivity() {
 
     to_map.setOnClickListener {
       val intent = Intent(this@MainActivity, MapActivity::class.java)
+      startActivity(intent)
+    }
+
+    to_list.setOnClickListener {
+      val intent = Intent(this@MainActivity, TravelRecordListActivity::class.java)
       startActivity(intent)
     }
   }
