@@ -19,6 +19,5 @@ interface RecordListContract {
     fun openDetail(spot: SpotStore)
     fun sortList(recordSortType: RecordSortType)
     fun deleteTravelRecord(place_id: String)
-
   }
 }

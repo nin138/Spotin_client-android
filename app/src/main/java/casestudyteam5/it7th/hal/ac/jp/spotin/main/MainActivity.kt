@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentActivity
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
-import android.util.Log
 import casestudyteam5.it7th.hal.ac.jp.spotin.map.MapActivity
 
 class MainActivity : FragmentActivity() {

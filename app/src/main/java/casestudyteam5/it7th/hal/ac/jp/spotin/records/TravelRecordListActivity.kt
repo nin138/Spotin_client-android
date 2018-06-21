@@ -4,7 +4,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.DBFactory
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotStore
@@ -22,8 +21,8 @@ class TravelRecordListActivity : AppCompatActivity(), RecordListContract.View, R
     }
 
     override fun showList(list: List<SpotStore>) {
-        mainRecyclerView.adapter = RecyclerAdapter(this, this, list)
-        mainRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+      mainRecyclerView.adapter = RecyclerAdapter(this, this, list)
+      mainRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
     override fun onItemClick(view: View, position: Int) {
@@ -53,6 +52,4 @@ class TravelRecordListActivity : AppCompatActivity(), RecordListContract.View, R
     override fun showNoRecordMessage() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
-
 }
