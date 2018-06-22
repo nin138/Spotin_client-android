@@ -86,8 +86,8 @@ class MapActivity : AppCompatActivity(), MapContract.View, OnMapReadyCallback, G
     if (map == null) return
     val list = spots.map {
       val marker = map!!.addMarker(createSpotMarkerOption(
-        lat = it.lat.toDouble(),
-        lng = it.lng.toDouble(),
+        lat = it.lat,
+        lng = it.lng,
         name = it.name))
       MapPresenter.MarkerData(it, marker)
     }

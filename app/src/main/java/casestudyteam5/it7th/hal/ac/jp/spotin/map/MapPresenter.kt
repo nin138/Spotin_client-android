@@ -3,6 +3,7 @@ package casestudyteam5.it7th.hal.ac.jp.spotin.map
 import android.location.Location
 import android.location.LocationListener
 import android.os.Bundle
+import android.util.Log
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.SpotApi
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
@@ -69,7 +70,7 @@ class MapPresenter(private val view: MapContract.View) : MapContract.Presenter {
     }
 
     override fun onLocationChanged(location: Location?) {
-      println("\n\n\n\n\nlocation: " + location?.latitude.toString() + "," + location?.longitude)
+      Log.d("gps::location update", location?.latitude.toString() + "," + location?.longitude)
       if (location != null) onLocationUpdated(LatLng(location.latitude, location.longitude))
     }
   }

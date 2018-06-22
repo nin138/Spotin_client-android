@@ -25,8 +25,8 @@ class SpotApi {
     private const val BASE_URL = "https://5z59rcfzu9.execute-api.ap-northeast-1.amazonaws.com/spotin_dev"
   }
   data class Spot(
-    val lat: String,
-    val lng: String,
+    val lat: Double,
+    val lng: Double,
     val place_id: String,
     val name: String,
     val icon: String
