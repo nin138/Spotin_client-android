@@ -1,14 +1,14 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin.service.api
 
 import com.squareup.moshi.Moshi
-import kotlinx.coroutines.experimental.DefaultDispatcher
-import kotlinx.coroutines.experimental.withContext
+import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.experimental.async
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
 class SpotApi {
-  suspend fun getSpotList(category: String, lat: Double, lng: Double): SpotApi.Spots {
-    return withContext(DefaultDispatcher) {
+  fun getSpotList(category: String, lat: Double, lng: Double): Deferred<SpotApi.Spots> {
+    return async {
       val url = """$BASE_URL/spot/list/$category/$lat,$lng"""
       val client = OkHttpClient()
       val request = Request.Builder().url(url).build()

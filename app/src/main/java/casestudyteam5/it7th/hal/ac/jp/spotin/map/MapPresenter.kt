@@ -17,7 +17,7 @@ class MapPresenter(private val view: MapContract.View) : MapContract.Presenter {
   var selectedCategory = "restaurant"
     set(category) {
       field = category
-      if (location != null) setStops(location!!)
+      if (location != null) updateStops(location!!)
     }
   override fun onMarkerAdded(list: List<MarkerData>) {
     markerList = markerList.plus(list)
@@ -31,13 +31,12 @@ class MapPresenter(private val view: MapContract.View) : MapContract.Presenter {
   override fun onLocationUpdated(location: LatLng) {
     view.updateYouAreHere(location)
     this.location = location
-    setStops(location)
+    updateStops(location)
   }
 
-  private fun setStops(location: LatLng) {
+  private fun updateStops(location: LatLng) {
     launch {
-      val spots = SpotApi().getSpotList(selectedCategory, location.latitude, location.longitude)
-
+      val spots = SpotApi().getSpotList(selectedCategory, location.latitude, location.longitude).await()
       val markersScheduledForRemoval = mutableListOf<Marker>()
       val markers = markerList.filter {
         if (spots.spot.find { spot -> it.spot.place_id == spot.place_id } == null) {
