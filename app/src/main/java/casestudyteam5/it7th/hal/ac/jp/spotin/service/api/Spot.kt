@@ -7,7 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 
 class SpotApi {
-  suspend fun getSpotList(category: String, lat: String, lng: String): SpotApi.Spots {
+  suspend fun getSpotList(category: String, lat: Double, lng: Double): SpotApi.Spots {
     return withContext(DefaultDispatcher) {
       val url = """$BASE_URL/spot/list/$category/$lat,$lng"""
       val client = OkHttpClient()
@@ -18,10 +18,11 @@ class SpotApi {
   }
   private fun convertJsonToSpots(json: String): Spots {
     return Moshi.Builder().build().adapter(Spots::class.java)
-      .fromJson(json) ?: Spots(spot = arrayOf())
+      .fromJson(json) ?: Spots(spot = listOf())
   }
+
   companion object {
-    const val BASE_URL = "https://5z59rcfzu9.execute-api.ap-northeast-1.amazonaws.com/spotin_dev"
+    private const val BASE_URL = "https://5z59rcfzu9.execute-api.ap-northeast-1.amazonaws.com/spotin_dev"
   }
   data class Spot(
     val lat: String,
@@ -32,7 +33,6 @@ class SpotApi {
   )
 
   data class Spots(
-    //todo override equals and hashCode
-    val spot: Array<Spot>
+    val spot: List<Spot>
   )
 }

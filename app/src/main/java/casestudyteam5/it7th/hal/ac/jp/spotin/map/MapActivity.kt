@@ -3,10 +3,9 @@ package casestudyteam5.it7th.hal.ac.jp.spotin.map
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.location.Location
-import android.location.LocationListener
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import casestudyteam5.it7th.hal.ac.jp.spotin.addrecord.AddRecordActivity
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.SpotApi
@@ -22,74 +21,14 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
-
-  data class MarkerData(val spot: SpotApi.Spot, val marker: Marker)
+class MapActivity : AppCompatActivity(), MapContract.View, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
   var map: GoogleMap? = null
-  private var markerList: List<MarkerData> = listOf()
   private var yourMarker: Marker? = null
-  private var gps: GPS? = null
   private var range: Circle? = null
-
-  private fun startGPS() {
-    println("\n\n\n\ngps listen")
-    val location = gps?.getLastLocation()
-    if (location != null) onLocationUpdated(location)
-    gps?.listen(object : LocationListener {
-      override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-      }
-
-      override fun onProviderEnabled(p0: String?) {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-      }
-
-      override fun onProviderDisabled(p0: String?) {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-      }
-
-      override fun onLocationChanged(location: Location?) {
-        println("\n\n\n\n\nlocation: " + location?.latitude.toString() + "," + location?.longitude)
-        if (location != null) onLocationUpdated(location)
-      }
-    })
-  }
-
-  override fun onMarkerClick(marker: Marker?): Boolean {
-    markerList.forEach {
-      if (it.marker == marker) {
-        val intent = Intent(this, AddRecordActivity::class.java)
-        intent.putExtra("place_id", it.spot.place_id)
-        intent.putExtra("place_name", it.spot.name)
-        startActivity(intent)
-      }
-    }
-    return false
-  }
-
-  private fun onLocationUpdated(location: Location) {
-    val position = LatLng(location.latitude, location.longitude)
-    //TODO マーカーを差分のみアップデート
-    map?.animateCamera(CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude)))
-    //TODO 現在地
-    yourMarker?.remove()
-    yourMarker = map?.addMarker(MarkerOptions()
-        .icon(BitmapDescriptorFactory.fromResource(R.drawable.a))
-        .position(position))
-    range?.remove()
-    range = map?.addCircle(CircleOptions()
-      .center(position)
-      .radius(200.0)
-      .strokeColor(Color.BLACK)
-      .strokeWidth(5f)
-      .fillColor(0x30ff0000))
-    setSpotsToMap("restaurant", location.latitude, location.longitude)
-  }
+  private var gps: GPS? = null
+  private val presenter: MapContract.Presenter = MapPresenter(this)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -97,7 +36,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerC
     val mapFragment = supportFragmentManager
       .findFragmentById(R.id.map) as SupportMapFragment
     mapFragment.getMapAsync(this)
-    println(PermissionUtil.isPermissionGranted(this, GPS.PERMISSION).toString())
   }
 
   override fun onResume() {
@@ -118,26 +56,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerC
     map.moveCamera(CameraUpdateFactory.zoomTo(17f))
   }
 
-  private fun setSpotsToMap(category: String, lat: Double, lng: Double) {
-    val map = this.map
-    launch(CommonPool) {
-      val spots = SpotApi().getSpotList(category, lat.toString(), lng.toString())
-      println("len=" + spots.spot.size)
-      launch(UI) {
-        val newList: MutableList<MarkerData> = mutableListOf()
-        markerList.forEach {
-          it.marker.remove()
-        }
-        spots.spot.forEach {
-          val marker = map?.addMarker(
-            MarkerOptions().position(LatLng(it.lat.toDouble(), it.lng.toDouble())).title(it.name))
-          if (marker != null) newList.add(MarkerData(spot = it, marker = marker))
-        }
-        markerList = newList
-      }
-    }
-  }
-
   override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     if (requestCode == GPS.REQUEST_CODE &&
@@ -145,5 +63,68 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerC
       grantResults[0] == PackageManager.PERMISSION_GRANTED) {
       startGPS()
     } else finish()
+  }
+
+  override fun onMarkerClick(marker: Marker): Boolean {
+    presenter.onMarkerClicked(marker)
+    return false
+  }
+
+  override fun updateYouAreHere(location: LatLng) {
+    map?.animateCamera(CameraUpdateFactory.newLatLng(location))
+    yourMarker?.remove()
+    yourMarker = map?.addMarker(createYourHereMarkerOption(location))
+    range?.remove()
+    range = map?.addCircle(createCircleOption(location))
+  }
+
+  override fun removeSpotMarkers(markers: List<Marker>) {
+    markers.forEach { it.remove() }
+  }
+
+  override fun setSpotMarkers(spots: List<SpotApi.Spot>) {
+    if (map == null) return
+    val list = spots.map {
+      val marker = map!!.addMarker(createSpotMarkerOption(
+        lat = it.lat.toDouble(),
+        lng = it.lng.toDouble(),
+        name = it.name))
+      MapPresenter.MarkerData(it, marker)
+    }
+    presenter.onMarkerAdded(list)
+  }
+
+  override fun startAddRecordActivity(spotId: String, spotName: String) {
+    val intent = Intent(this, AddRecordActivity::class.java)
+    intent.putExtra("place_id", spotId)
+    intent.putExtra("place_name", spotName)
+    startActivity(intent)
+  }
+
+  private fun startGPS() {
+    Log.d("gps", "started")
+    val location = gps?.getLastLocation()
+    if (location != null) presenter.onLocationUpdated(LatLng(location.latitude, location.longitude))
+    gps?.listen(presenter.locationListener)
+  }
+
+  private fun createSpotMarkerOption(lat: Double, lng: Double, name: String): MarkerOptions {
+    return MarkerOptions()
+      .position(LatLng(lat, lng))
+      .title(name)
+  }
+
+  private fun createYourHereMarkerOption(position: LatLng): MarkerOptions {
+    return MarkerOptions()
+      .icon(BitmapDescriptorFactory.fromResource(R.drawable.a))
+      .position(position)
+  }
+  private fun createCircleOption(position: LatLng): CircleOptions {
+    return CircleOptions()
+      .center(position)
+      .radius(200.0)
+      .strokeColor(Color.BLACK)
+      .strokeWidth(5f)
+      .fillColor(0x30ff0000)
   }
 }
