@@ -37,7 +37,7 @@ class AddRecordPresenter(
     //ユニーク値確認
     spotRepository.getSpotPlace(place_id, object : SpotDataSource.GetSpotCallback {
       override fun onGetSpot(spot: SpotStore) {
-        updataTravelRecord(place_id, comment, place_name, spot.date)
+        updataTravelRecord(place_id, comment, place_name, spot.travelRecord.date)
         imagepassList?.let { updataImageRecord(place_id, imagepassList) }
       }
 

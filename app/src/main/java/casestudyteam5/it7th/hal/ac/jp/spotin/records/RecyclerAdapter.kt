@@ -47,10 +47,10 @@ class RecyclerAdapter(
     holder.let {
       it.spotStore = itemList.get(position)
       val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd E")
-      it.itemDays.text = simpleDateFormat.format(itemList.get(position).date)
-      it.itemComment.text = itemList.get(position).comment
-      it.itemPlaceName.text = itemList.get(position).place_name
-      it.itemImage.setImageURI(Uri.parse(itemList.get(position).image_pass))
+      it.itemDays.text = simpleDateFormat.format(itemList.get(position).travelRecord.date)
+      it.itemComment.text = itemList.get(position).travelRecord.comment
+      it.itemPlaceName.text = itemList.get(position).travelRecord.place_name
+      it.itemImage.setImageURI(Uri.parse(itemList.get(position).spotImageList.get(0).image_pass))
     }
   }
 }
