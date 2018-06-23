@@ -9,8 +9,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
+import javax.inject.Inject
 
-class MapPresenter(private val view: MapContract.View) : MapContract.Presenter {
+class MapPresenter @Inject constructor(
+  private val view: MapActivity,
+  private val spotApi: SpotApi
+) : MapContract.Presenter {
 
   data class MarkerData(val spot: SpotApi.Spot, val marker: Marker)
   private var markerList: List<MarkerData> = listOf()
@@ -18,7 +22,7 @@ class MapPresenter(private val view: MapContract.View) : MapContract.Presenter {
   var selectedCategory = "restaurant"
     set(category) {
       field = category
-      if (location != null) updateStops(location!!)
+      if (location != null) updateSpots(location!!)
     }
   override fun onMarkerAdded(list: List<MarkerData>) {
     markerList = markerList.plus(list)
@@ -32,12 +36,12 @@ class MapPresenter(private val view: MapContract.View) : MapContract.Presenter {
   override fun onLocationUpdated(location: LatLng) {
     view.updateYouAreHere(location)
     this.location = location
-    updateStops(location)
+    updateSpots(location)
   }
 
-  private fun updateStops(location: LatLng) {
+  private fun updateSpots(location: LatLng) {
     launch {
-      val spots = SpotApi().getSpotList(selectedCategory, location.latitude, location.longitude).await()
+      val spots = spotApi.getSpotList(selectedCategory, location.latitude, location.longitude)
       val markersScheduledForRemoval = mutableListOf<Marker>()
       val markers = markerList.filter {
         if (spots.spot.find { spot -> it.spot.place_id == spot.place_id } == null) {
