@@ -3,7 +3,6 @@ package casestudyteam5.it7th.hal.ac.jp.spotin.map
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
@@ -21,14 +20,17 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
-class MapActivity : AppCompatActivity(), MapContract.View, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
   var map: GoogleMap? = null
   private var yourMarker: Marker? = null
   private var range: Circle? = null
   private var gps: GPS? = null
-  private val presenter: MapContract.Presenter = MapPresenter(this)
+  @Inject
+  lateinit var presenter: MapPresenter
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -72,13 +74,14 @@ class MapActivity : AppCompatActivity(), MapContract.View, OnMapReadyCallback, G
 
   override fun updateYouAreHere(location: LatLng) {
     map?.animateCamera(CameraUpdateFactory.newLatLng(location))
-    yourMarker?.remove()
-    yourMarker = map?.addMarker(createYourHereMarkerOption(location))
-    range?.remove()
-    range = map?.addCircle(createCircleOption(location))
+    if (yourMarker != null) yourMarker?.position = location
+    else yourMarker = map?.addMarker(createYourHereMarkerOption(location))
+    if (range != null) range?.center = location
+    else range = map?.addCircle(createCircleOption(location))
   }
 
   override fun removeSpotMarkers(markers: List<Marker>) {
+    Log.d("maker::rm", markers.size.toString())
     markers.forEach { it.remove() }
   }
 
@@ -119,6 +122,7 @@ class MapActivity : AppCompatActivity(), MapContract.View, OnMapReadyCallback, G
       .icon(BitmapDescriptorFactory.fromResource(R.drawable.a))
       .position(position)
   }
+
   private fun createCircleOption(position: LatLng): CircleOptions {
     return CircleOptions()
       .center(position)
