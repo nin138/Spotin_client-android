@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import casestudyteam5.it7th.hal.ac.jp.spotin.addrecord.AddRecordActivity
-import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.SpotApi
+import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.entity.Spot
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.gps.GPS
 import casestudyteam5.it7th.hal.ac.jp.spotin.util.PermissionUtil
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -85,7 +85,7 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
     markers.forEach { it.remove() }
   }
 
-  override fun setSpotMarkers(spots: List<SpotApi.Spot>) {
+  override fun setSpotMarkers(spots: List<Spot>) {
     if (map == null) return
     val list = spots.map {
       val marker = map!!.addMarker(createSpotMarkerOption(

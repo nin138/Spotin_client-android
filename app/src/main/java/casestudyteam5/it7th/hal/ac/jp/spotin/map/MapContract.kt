@@ -1,7 +1,7 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin.map
 
 import android.location.LocationListener
-import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.SpotApi
+import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.entity.Spot
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 
@@ -9,7 +9,7 @@ interface MapContract {
   interface View {
     fun updateYouAreHere(location: LatLng)
     fun removeSpotMarkers(markers: List<Marker>)
-    fun setSpotMarkers(spots: List<SpotApi.Spot>)
+    fun setSpotMarkers(spots: List<Spot>)
     fun startAddRecordActivity(spotId: String, spotName: String)
 //    fun setFavorite()
     // TODO: スポット選択
