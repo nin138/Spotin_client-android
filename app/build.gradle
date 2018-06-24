@@ -40,8 +40,6 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     //http
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     //moshi
     def moshiVerion = '1.6.0'
@@ -50,7 +48,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:2.3.0"
     //room
     implementation "android.arch.persistence.room:runtime:1.1.1"
-    kapt "android.arch.persistence.room:compiler:1.1.1"
+    implementation "android.arch.persistence.room:compiler:1.1.1"
     //test
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
