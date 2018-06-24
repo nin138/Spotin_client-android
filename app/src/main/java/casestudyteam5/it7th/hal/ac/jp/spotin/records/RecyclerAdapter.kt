@@ -3,6 +3,7 @@ package casestudyteam5.it7th.hal.ac.jp.spotin.records
 import android.content.Context
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
@@ -30,12 +31,6 @@ class RecyclerAdapter(
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
     val layoutInflater = LayoutInflater.from(context)
     val mView = layoutInflater.inflate(R.layout.list_item, parent, false)
-
-    mView.setOnClickListener { view ->
-      mRecyclerView?.let {
-        itemClickListener.onItemClick(view, it.getChildAdapterPosition(view))
-      }
-    }
     return RecyclerViewHolder(mView)
   }
 
@@ -51,6 +46,8 @@ class RecyclerAdapter(
       it.itemComment.text = itemList.get(position).travelRecord.comment
       it.itemPlaceName.text = itemList.get(position).travelRecord.place_name
       it.itemImage.setImageURI(Uri.parse(itemList.get(position).spotImageList.get(0).image_pass))
+      itemList.get(position).spotImageList.forEach { Log.d("imagepass", it.image_pass) }
+      it.itemView.setOnClickListener { itemClickListener.onItemClick(it, itemList.get(position)) }
     }
   }
 }

@@ -13,18 +13,18 @@ class RecordListPresenter(
     spotRepository.getAllSpot(object : SpotDataSource.LoadSpotCallback {
 
       override fun onLoadSuccess(travelRecordList: List<SpotStore>) {
-        //TODO:　データの加工(画像複数の際リストにまとめる)
         view.showList(travelRecordList)
       }
 
       override fun onLoadFailed() {
         //TODO:　取得できなかった場合の処理
+        view.showNoRecordMessage()
       }
     })
   }
 
   override fun openDetail(spot: SpotStore) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 
   override fun sortList(recordSortType: RecordSortType) {

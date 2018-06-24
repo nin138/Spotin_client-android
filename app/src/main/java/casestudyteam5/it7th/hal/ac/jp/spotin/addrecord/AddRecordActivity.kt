@@ -10,6 +10,9 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -18,17 +21,23 @@ import android.widget.TextView
 import android.widget.Toast
 
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
+import casestudyteam5.it7th.hal.ac.jp.spotin.casestudyteam5.it7th.hal.ac.jp.spotin.addrecord.AddRecordRecyclerAdapter
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.DBFactory
+import casestudyteam5.it7th.hal.ac.jp.spotin.data.TravelRecord
+import kotlinx.android.synthetic.main.activity_add_record.*
 
-class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
+class AddRecordActivity :
+  AppCompatActivity(),
+  AddRecordContract.View,
+  AddRecordRecyclerAdapter.ViewHolder.ItemClickListener {
 
   lateinit var image: ImageView
   lateinit var presenter: AddRecordPresenter
+  lateinit var recycleView: RecyclerView
   val place_id: String by lazy { intent.extras.getString("place_id") }
   val place_name: String by lazy { intent.extras.getString("place_name") }
   var comment: String = ""
   private var imageUri: Uri? = null
-  override var imagepassList: List<Uri> = listOf()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -39,6 +48,9 @@ class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
     //Create Presenter
     //TODO:Repositoryのインスタンスを渡す
     presenter = AddRecordPresenter(this, DBFactory.provideSpotRepository(this))
+
+    showImageList(presenter.imagepassList)
+
     val chooseBtn: Button = findViewById(R.id.takeImage)
     chooseBtn.setOnClickListener {
       //permission確認後カメラ起動
@@ -97,10 +109,15 @@ class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
     }
   }
 
-  override fun showImage(imagepass: Uri) {
-    image = findViewById(R.id.image)
-    image.visibility = View.VISIBLE
-    image.setImageURI(imagepass)
+  override fun showImageList(imagepassList: List<TravelRecord.SpotImage>) {
+    recycleView = findViewById(R.id.recycleAddImageView)
+    recycleView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+    recycleView.adapter = AddRecordRecyclerAdapter(this, this, imagepassList)
+  }
+
+  override fun onItemClick(view: View, position: Int) {
+    Log.d("position", position.toString())
+    presenter.deleteListPositon(position)
   }
 
   override fun editComment() {
@@ -120,6 +137,7 @@ class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
         .setMessage("Would you like to cancel editing?")
         .setPositiveButton(android.R.string.ok, { _, _ ->
           //TODO:遷移元に戻る
+          finish()
         })
         .create()
         .show()
@@ -132,7 +150,7 @@ class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
     if (this.comment.isEmpty() && this.imageUri == null) {
       showEmpryError()
     } else {
-      presenter.saveRecord(this.place_id, this.comment, this.place_name, this.imagepassList)
+      presenter.saveRecord(this.place_id, this.comment, this.place_name, presenter.imagepassList)
       Toast.makeText(this, "success", Toast.LENGTH_SHORT).show()
       finish()
     }
@@ -142,10 +160,8 @@ class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
     super.onActivityResult(requestCode, resultCode, data)
     if (requestCode == CHOOSERS) {
       val uri: Uri? = data?.data
-      uri?.let {
-        imageUri = presenter.getFileSchemeUri(it)
-        this.imagepassList += presenter.editImageList(imageUri!!) }
-      ?: this.imageUri?.let { this.imagepassList += presenter.editImageList(it) }
+      uri?.let { imageUri = presenter.getFileSchemeUri(applicationContext, it) }
+      presenter.imagepassList.plus(presenter.editImageList(presenter.createImageSpot(place_id, imageUri)))
     }
   }
 
