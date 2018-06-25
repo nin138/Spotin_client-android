@@ -1,5 +1,7 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin.service.api
 
+import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.entity.Spot
+import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.entity.Spots
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.withContext
@@ -15,19 +17,10 @@ class SpotApi @Inject constructor(private val service: Service) {
       @Path("lat")lat: Double,
       @Path("lng")lng: Double
     ): Deferred<Spots>
+
+    @GET("spot/details/{place_id}")
+    fun getSpotDetail(@Path("place_id")placeId: String): Deferred<Spot>
   }
-
-  data class Spot(
-    val lat: Double,
-    val lng: Double,
-    val place_id: String,
-    val name: String,
-    val icon: String
-  )
-
-  data class Spots(
-    val spot: List<Spot>
-  )
 
   suspend fun getSpotList(category: String, lat: Double, lng: Double): Spots = withContext(CommonPool) {
     service.getSpotList(category, lat, lng).await()
