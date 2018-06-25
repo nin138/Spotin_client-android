@@ -1,4 +1,4 @@
-package casestudyteam5.it7th.hal.ac.jp.spotin.map
+package casestudyteam5.it7th.hal.ac.jp.spotin.view.map
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -6,7 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
-import casestudyteam5.it7th.hal.ac.jp.spotin.addrecord.AddRecordActivity
+import casestudyteam5.it7th.hal.ac.jp.spotin.view.addrecord.AddRecordActivity
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.SpotApi
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.gps.GPS
 import casestudyteam5.it7th.hal.ac.jp.spotin.util.PermissionUtil

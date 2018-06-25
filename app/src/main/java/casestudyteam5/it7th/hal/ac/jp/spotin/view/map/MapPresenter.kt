@@ -1,4 +1,4 @@
-package casestudyteam5.it7th.hal.ac.jp.spotin.map
+package casestudyteam5.it7th.hal.ac.jp.spotin.view.map
 
 import android.location.Location
 import android.location.LocationListener
