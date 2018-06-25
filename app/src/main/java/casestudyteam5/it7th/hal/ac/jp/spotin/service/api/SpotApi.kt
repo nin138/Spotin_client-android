@@ -22,8 +22,6 @@ class SpotApi @Inject constructor(private val service: Service) {
     fun getSpotDetail(@Path("place_id")placeId: String): Deferred<Spot>
   }
 
-
-
   suspend fun getSpotList(category: String, lat: Double, lng: Double): Spots = withContext(CommonPool) {
     service.getSpotList(category, lat, lng).await()
   }

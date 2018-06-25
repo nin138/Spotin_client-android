@@ -1,6 +1,6 @@
-package casestudyteam5.it7th.hal.ac.jp.spotin.apiAccess.Interface
+package casestudyteam5.it7th.hal.ac.jp.spotin.service.apiAccess.Interface
 
-import casestudyteam5.it7th.hal.ac.jp.spotin.apiAccess.Entity.SpotData
+import casestudyteam5.it7th.hal.ac.jp.spotin.service.apiAccess.Entity.SpotData
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory

@@ -1,4 +1,4 @@
-package casestudyteam5.it7th.hal.ac.jp.spotin.records
+package casestudyteam5.it7th.hal.ac.jp.spotin.view.records
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

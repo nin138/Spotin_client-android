@@ -1,4 +1,4 @@
-package casestudyteam5.it7th.hal.ac.jp.spotin.apiAccess.Entity
+package casestudyteam5.it7th.hal.ac.jp.spotin.service.apiAccess.Entity
 
 data class SpotData(
   var lat: Double,
