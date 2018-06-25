@@ -1,4 +1,4 @@
-package casestudyteam5.it7th.hal.ac.jp.spotin.records
+package casestudyteam5.it7th.hal.ac.jp.spotin.view.records
 
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotDataSource
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotRepository

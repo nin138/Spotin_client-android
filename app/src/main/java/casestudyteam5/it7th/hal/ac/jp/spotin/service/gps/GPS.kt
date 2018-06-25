@@ -22,7 +22,7 @@ class GPS(private val context: Context) {
     const val MINIMUM_DISTANCE_BETWEEN_LOCATION_UPDATES_IN_METERS = 1f
   }
   @SuppressLint("MissingPermission")
-  fun getLastLocation(): Location {
+  fun getLastLocation(): Location? {
     if (!PermissionUtil.isPermissionGranted(context, PERMISSION)) throw Error("permission not granted")
     return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
   }

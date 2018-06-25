@@ -1,4 +1,4 @@
-package casestudyteam5.it7th.hal.ac.jp.spotin.addrecord
+package casestudyteam5.it7th.hal.ac.jp.spotin.view.addrecord
 
 import android.Manifest
 import android.app.AlertDialog
@@ -78,11 +78,11 @@ class AddRecordActivity :
     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
       //パーミッションをリクエストします。
       AlertDialog.Builder(this)
-        .setPositiveButton(android.R.string.ok, { _, _ ->
+        .setPositiveButton(android.R.string.ok) { _, _ ->
           // OKボタンがタップしパーミッションをリクエスト
           ActivityCompat.requestPermissions(this,
             arrayOf(Manifest.permission.CAMERA), PERMISSIONS)
-        })
+        }
         .show()
       return
     }
@@ -135,10 +135,10 @@ class AddRecordActivity :
       AlertDialog.Builder(this)
         .setTitle("Editing in progress")
         .setMessage("Would you like to cancel editing?")
-        .setPositiveButton(android.R.string.ok, { _, _ ->
+        .setPositiveButton(android.R.string.ok) { _, _ ->
           //TODO:遷移元に戻る
           finish()
-        })
+        }
         .create()
         .show()
     }
@@ -160,7 +160,7 @@ class AddRecordActivity :
     super.onActivityResult(requestCode, resultCode, data)
     if (requestCode == CHOOSERS) {
       val uri: Uri? = data?.data
-      uri?.let { imageUri = presenter.getFileSchemeUri(applicationContext, it) }
+      uri?.let { imageUri = it }
       presenter.imagepassList.plus(presenter.editImageList(presenter.createImageSpot(place_id, imageUri)))
     }
   }
@@ -172,19 +172,19 @@ class AddRecordActivity :
           AlertDialog.Builder(this)
             .setTitle("get Permission Error")
             .setMessage("To retry please press the OK button again")
-            .setPositiveButton(android.R.string.ok, { _, _ ->
+            .setPositiveButton(android.R.string.ok) { _, _ ->
               ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.CAMERA), PERMISSIONS)
-            })
+            }
             .create()
             .show()
         } else {
           AlertDialog.Builder(this)
             .setTitle("get Permission Error")
             .setMessage("I will not allow it in the future but it was selected.")
-            .setPositiveButton(android.R.string.ok, { _, _ ->
+            .setPositiveButton(android.R.string.ok) { _, _ ->
               //TODO:設定画面への遷移
-            })
+            }
             .create()
             .show()
         }

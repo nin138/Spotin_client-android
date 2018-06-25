@@ -1,4 +1,4 @@
-package casestudyteam5.it7th.hal.ac.jp.spotin.addrecord
+package casestudyteam5.it7th.hal.ac.jp.spotin.view.addrecord
 
 import android.content.ContentValues
 import android.content.Context
@@ -8,7 +8,6 @@ import casestudyteam5.it7th.hal.ac.jp.spotin.data.TravelRecord
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotDataSource
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotRepository
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotStore
-import java.io.File
 import java.util.Date
 
 class AddRecordPresenter(
@@ -24,32 +23,6 @@ class AddRecordPresenter(
     contentValues.put(MediaStore.Images.Media.TITLE, imageName)
     contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
     return context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-  }
-
-  fun getFileSchemeUri(context: Context, contentScheme: Uri): Uri {
-    var fileScheme: Uri = contentScheme
-/*
-    var str = fileScheme.path
-    var path = contentScheme.toString()
-    if (path.matches("^file:.*".toRegex())) {
-      str =  path.replaceFirst("file://".toRegex(), "")
-    } else if (!path.matches("^content:.*".toRegex())) {
-      return Uri.parse(str)
-    }
-    val context = context
-    val contentResolver = context.getContentResolver()
-    val columns = arrayOf(MediaStore.Images.Media.DATA)
-    val cursor = contentResolver.query(contentScheme, columns, null, null, null)
-    if (cursor != null) {
-      if (cursor.getCount() > 0) {
-        cursor.moveToFirst()
-        path = cursor.getString(0)
-      }
-      cursor.close()
-    }
-*/
-    fileScheme = Uri.fromFile(File(fileScheme.path))
-    return fileScheme
   }
 
   override fun saveRecord(
@@ -91,17 +64,12 @@ class AddRecordPresenter(
   }
 
   override fun createImageSpot(place_id: String, imagepass: Uri?): TravelRecord.SpotImage {
-    val spotImage = TravelRecord.SpotImage(place_id, imagepass.toString())
-    return spotImage
+    return TravelRecord.SpotImage(place_id, imagepass.toString())
   }
 
   override fun createImageRecord(place_id: String, imagepassList: List<TravelRecord.SpotImage>) {
-    val spotImageList: MutableList<TravelRecord.SpotImage> = mutableListOf()
-    var spotImage: TravelRecord.SpotImage
-    imagepassList.forEach {
-      spotImage = TravelRecord.SpotImage(place_id, it.image_pass.toString())
-      spotImageList.add(spotImage) }
-    spotRepository.addSpotImage(spotImageList.toList())
+
+    spotRepository.addSpotImage(this.imagepassList)
   }
 
   override fun updataTravelRecord(place_id: String, comment: String, place_name: String, date: Date) {
@@ -110,12 +78,6 @@ class AddRecordPresenter(
   }
 
   override fun updataImageRecord(place_id: String, imagepassList: List<TravelRecord.SpotImage>) {
-    val spotImageList: MutableList<TravelRecord.SpotImage> = mutableListOf()
-    var spotImage: TravelRecord.SpotImage
-    imagepassList.forEach {
-      spotImage = TravelRecord.SpotImage(place_id, it.toString())
-      spotImageList.add(spotImage) }
-    //TODO:UpData用メソッド作成
-    spotRepository.addSpotImage(spotImageList.toList())
+    spotRepository.addSpotImage(this.imagepassList)
   }
 }

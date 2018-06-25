@@ -1,4 +1,4 @@
-package casestudyteam5.it7th.hal.ac.jp.spotin.apiAccess
+package casestudyteam5.it7th.hal.ac.jp.spotin.service.apiAccess
 
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

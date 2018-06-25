@@ -1,6 +1,7 @@
-package casestudyteam5.it7th.hal.ac.jp.spotin.records
+package casestudyteam5.it7th.hal.ac.jp.spotin.view.records
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -45,8 +46,18 @@ class RecyclerAdapter(
       it.itemDays.text = simpleDateFormat.format(itemList.get(position).travelRecord.date)
       it.itemComment.text = itemList.get(position).travelRecord.comment
       it.itemPlaceName.text = itemList.get(position).travelRecord.place_name
-      it.itemImage.setImageURI(Uri.parse(itemList.get(position).spotImageList.get(0).image_pass))
-      itemList.get(position).spotImageList.forEach { Log.d("imagepass", it.image_pass) }
+      if (itemList.get(position).spotImageList?.size != 0) {
+        val parcelFileDescriptor = context.contentResolver
+          .openFileDescriptor(Uri.parse(itemList.get(position).spotImageList?.get(0)?.image_pass), "r")
+        if (parcelFileDescriptor != null) {
+          val fileDescriptor = parcelFileDescriptor.fileDescriptor
+          val bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor)
+          parcelFileDescriptor.close()
+          holder.itemImage.setImageBitmap(bitmap)
+        }
+      }
+
+      itemList.get(position).spotImageList?.forEach { Log.d("imagepass", it.image_pass) }
       it.itemView.setOnClickListener { itemClickListener.onItemClick(it, itemList.get(position)) }
     }
   }

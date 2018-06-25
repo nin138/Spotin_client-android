@@ -1,13 +1,13 @@
-package casestudyteam5.it7th.hal.ac.jp.spotin.main
+package casestudyteam5.it7th.hal.ac.jp.spotin.view.main
 
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
-import casestudyteam5.it7th.hal.ac.jp.spotin.addrecord.AddRecordActivity
-import casestudyteam5.it7th.hal.ac.jp.spotin.map.MapActivity
-import casestudyteam5.it7th.hal.ac.jp.spotin.records.TravelRecordListActivity
+import casestudyteam5.it7th.hal.ac.jp.spotin.view.addrecord.AddRecordActivity
+import casestudyteam5.it7th.hal.ac.jp.spotin.view.map.MapActivity
+import casestudyteam5.it7th.hal.ac.jp.spotin.view.records.TravelRecordListActivity
 
 class MainActivity : FragmentActivity() {
 

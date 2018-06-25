@@ -1,10 +1,11 @@
-package casestudyteam5.it7th.hal.ac.jp.spotin.map
+package casestudyteam5.it7th.hal.ac.jp.spotin.view.map
 
 import android.location.Location
 import android.location.LocationListener
 import android.os.Bundle
 import android.util.Log
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.SpotApi
+import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.entity.Spot
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import kotlinx.coroutines.experimental.android.UI
@@ -16,7 +17,7 @@ class MapPresenter @Inject constructor(
   private val spotApi: SpotApi
 ) : MapContract.Presenter {
 
-  data class MarkerData(val spot: SpotApi.Spot, val marker: Marker)
+  data class MarkerData(val spot: Spot, val marker: Marker)
   private var markerList: List<MarkerData> = listOf()
   private var location: LatLng? = null
   var selectedCategory = "restaurant"

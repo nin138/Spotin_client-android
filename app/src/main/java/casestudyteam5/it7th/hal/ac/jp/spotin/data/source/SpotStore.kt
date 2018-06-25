@@ -10,5 +10,5 @@ class SpotStore {
   lateinit var travelRecord: TravelRecord
 
   @Relation(parentColumn = "place_id", entityColumn = "place_id")
-  lateinit var spotImageList: List<TravelRecord.SpotImage>
+  var spotImageList: List<TravelRecord.SpotImage>? = null
 }

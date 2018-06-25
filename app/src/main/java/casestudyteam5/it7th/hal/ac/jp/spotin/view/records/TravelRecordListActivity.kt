@@ -1,4 +1,4 @@
-package casestudyteam5.it7th.hal.ac.jp.spotin.records
+package casestudyteam5.it7th.hal.ac.jp.spotin.view.records
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -27,8 +27,7 @@ class TravelRecordListActivity : AppCompatActivity(), RecordListContract.View, R
     }
 
     override fun onItemClick(view: View, spotStore: SpotStore) {
-      val str = spotStore.spotImageList.get(0).image_pass
-      Log.d("item", spotStore.spotImageList.get(0).image_pass)
+      Log.d("item", spotStore.spotImageList?.get(0)?.image_pass)
       presenter.openDetail(spotStore)
         //TODO: 詳細へ遷移
     }
@@ -54,6 +53,6 @@ class TravelRecordListActivity : AppCompatActivity(), RecordListContract.View, R
     }
 
     override fun showNoRecordMessage() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
