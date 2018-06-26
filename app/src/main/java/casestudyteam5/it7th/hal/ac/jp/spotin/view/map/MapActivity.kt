@@ -67,13 +67,14 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
     } else finish()
   }
 
-  override fun onMarkerClick(marker: Marker): Boolean {
-    presenter.onMarkerClicked(marker)
+  override fun onMarkerClick(marker: Marker?): Boolean {
+    marker?.let { presenter.onMarkerClicked(it) }
     return false
   }
 
   override fun updateYouAreHere(location: LatLng) {
     map?.animateCamera(CameraUpdateFactory.newLatLng(location))
+
     if (yourMarker != null) yourMarker?.position = location
     else yourMarker = map?.addMarker(createYourHereMarkerOption(location))
     if (range != null) range?.center = location
