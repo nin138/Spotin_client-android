@@ -21,6 +21,7 @@ interface MapContract {
     fun onLocationUpdated(location: LatLng)
     fun onMarkerClicked(marker: Marker)
     fun onMarkerAdded(list: List<MapPresenter.MarkerData>)
+    fun onPause()
 //    fun zoomControl()
     // TODO: 現在地取得
     // TODO: スポット取得

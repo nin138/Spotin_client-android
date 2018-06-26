@@ -49,6 +49,7 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
   override fun onPause() {
     super.onPause()
     gps?.stop()
+    presenter.onPause()
   }
 
   override fun onMapReady(map: GoogleMap) {
