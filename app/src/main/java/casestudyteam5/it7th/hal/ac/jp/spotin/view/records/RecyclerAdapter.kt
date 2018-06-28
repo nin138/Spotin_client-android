@@ -40,25 +40,22 @@ class RecyclerAdapter(
   }
 
   override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
+    val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd E")
     holder.let {
       it.spotStore = itemList.get(position)
-      val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd E")
       it.itemDays.text = simpleDateFormat.format(itemList.get(position).travelRecord.date)
       it.itemComment.text = itemList.get(position).travelRecord.comment
       it.itemPlaceName.text = itemList.get(position).travelRecord.place_name
-      if (itemList.get(position).spotImageList?.size != 0) {
-        val parcelFileDescriptor = context.contentResolver
-          .openFileDescriptor(Uri.parse(itemList.get(position).spotImageList?.get(0)?.image_pass), "r")
-        if (parcelFileDescriptor != null) {
-          val fileDescriptor = parcelFileDescriptor.fileDescriptor
-          val bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor)
-          parcelFileDescriptor.close()
-          holder.itemImage.setImageBitmap(bitmap)
-        }
-      }
-
       itemList.get(position).spotImageList?.forEach { Log.d("imagepass", it.image_pass) }
       it.itemView.setOnClickListener { itemClickListener.onItemClick(it, itemList.get(position)) }
+    }
+    if (itemList.get(position).spotImageList?.size != 0) {
+      val parcelFileDescriptor = context.contentResolver
+        .openFileDescriptor(Uri.parse(itemList.get(position).spotImageList?.get(0)?.image_pass), "r") ?: return
+      val fileDescriptor = parcelFileDescriptor.fileDescriptor
+      val bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor)
+      parcelFileDescriptor.close()
+      holder.itemImage.setImageBitmap(bitmap)
     }
   }
 }

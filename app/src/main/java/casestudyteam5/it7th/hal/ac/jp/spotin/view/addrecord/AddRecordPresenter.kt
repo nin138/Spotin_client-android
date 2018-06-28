@@ -28,22 +28,20 @@ class AddRecordPresenter(
   override fun saveRecord(
     place_id: String,
     comment: String,
-    place_name: String,
-    imagepassList: List<TravelRecord.SpotImage>?
+    place_name: String
   ) {
     //ユニーク値確認
     spotRepository.getSpotPlace(place_id, object : SpotDataSource.GetSpotCallback {
       override fun onGetSpot(spot: SpotStore) {
         updataTravelRecord(place_id, comment, place_name, spot.travelRecord.date)
-        imagepassList?.let { updataImageRecord(place_id, imagepassList) }
+        imagepassList.let { updataImageRecord(place_id, imagepassList) }
       }
 
       override fun onGetFailedSpot() {
         createTravelRecord(place_id, comment, place_name, date = Date())
-        imagepassList?.let { createImageRecord(place_id, imagepassList) }
+        imagepassList.let { createImageRecord(place_id, imagepassList) }
       }
     })
-    //TODO:"データベースに挿入処理"
   }
 
   override fun editImageList(imagepass: TravelRecord.SpotImage): List<TravelRecord.SpotImage> {
@@ -52,7 +50,11 @@ class AddRecordPresenter(
     return imagepassList
   }
 
-  fun deleteListPositon(position: Int) {
+  override fun getImageList(): List<TravelRecord.SpotImage> {
+    return imagepassList
+  }
+
+  override fun deleteListPositon(position: Int) {
     imagepassList.removeAt(position)
     view.showImageList(imagepassList)
   }
@@ -68,7 +70,6 @@ class AddRecordPresenter(
   }
 
   override fun createImageRecord(place_id: String, imagepassList: List<TravelRecord.SpotImage>) {
-
     spotRepository.addSpotImage(this.imagepassList)
   }
 

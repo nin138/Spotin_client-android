@@ -18,9 +18,11 @@ interface AddRecordContract {
     fun decision()
   }
   interface Presenter {
-    fun saveRecord(place_id: String, comment: String, place_name: String, imagepassList: List<TravelRecord.SpotImage>?)
+    fun saveRecord(place_id: String, comment: String, place_name: String)
     fun getcameraUri(context: Context): Uri
     fun editImageList(imagepass: TravelRecord.SpotImage): List<TravelRecord.SpotImage>//表示用
+    fun getImageList(): List<TravelRecord.SpotImage>
+    fun deleteListPositon(position: Int)
     fun createImageSpot(place_id: String, imagepass: Uri?): TravelRecord.SpotImage
     fun createTravelRecord(place_id: String, comment: String, place_name: String, date: Date)
     fun createImageRecord(place_id: String, imagepassList: List<TravelRecord.SpotImage>)

@@ -5,7 +5,6 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Update
 import android.arch.persistence.room.Query
 import android.arch.persistence.room.Delete
-import android.arch.persistence.room.Transaction
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.TravelRecord
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotStore
 import java.util.Date
@@ -23,7 +22,6 @@ import java.util.Date
   @Update
   fun upDateSpot(travelRecord: TravelRecord)
 
-  @Transaction
   @Query("SELECT * FROM travel_record")
   fun getAllSpot(): List<SpotStore>
 
@@ -32,7 +30,6 @@ import java.util.Date
     "WHERE travel_record.place_id = (:place_id)")
   fun getSpotPlace(place_id: String): SpotStore?
 
-  @Transaction
   @Query("SELECT * FROM travel_record INNER JOIN spot_image ON travel_record.place_id WHERE date = (:date)")
   fun getSpotData(date: Date): List<SpotStore>
 

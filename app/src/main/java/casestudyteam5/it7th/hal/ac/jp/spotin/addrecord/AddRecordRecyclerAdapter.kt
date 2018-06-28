@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.add_image_list.view.*
 
 class AddRecordRecyclerAdapter(
   private val context: Context,
-  private val itemClickListener: ViewHolder.ItemClickListener,
+  private val itemClickListener: ViewHolder.OnItemClickListener,
   private val spotImageList: List<TravelRecord.SpotImage>
 ) : RecyclerView.Adapter<AddRecordRecyclerAdapter.ViewHolder>() {
 
@@ -51,20 +51,17 @@ class AddRecordRecyclerAdapter(
     holder.let {
       it.spotImage = spotImageList[position]
       val parcelFileDescriptor = context.contentResolver
-        .openFileDescriptor(Uri.parse(spotImageList[position].image_pass), "r")
-      if (parcelFileDescriptor != null) {
-        val fileDescriptor = parcelFileDescriptor.fileDescriptor
-        val bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor)
-        parcelFileDescriptor.close()
-        it.itemImage.setImageBitmap(bitmap)
-      }
-      //it.itemImage.setImageURI(Uri.parse(spotImageList[position].image_pass))
+        .openFileDescriptor(Uri.parse(spotImageList[position].image_pass), "r") ?: return
+      val fileDescriptor = parcelFileDescriptor.fileDescriptor
+      val bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor)
+      parcelFileDescriptor.close()
+      it.itemImage.setImageBitmap(bitmap)
     }
   }
 
   class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    interface ItemClickListener {
+    interface OnItemClickListener {
       fun onItemClick(view: View, position: Int)
     }
 
