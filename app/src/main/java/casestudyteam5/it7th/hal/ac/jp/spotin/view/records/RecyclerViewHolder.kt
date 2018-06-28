@@ -10,7 +10,7 @@ import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotStore
 class RecyclerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
   interface ItemClickListener {
-    fun onItemClick(view: View, position: Int)
+    fun onItemClick(view: View, spotStore: SpotStore)
   }
   var spotStore: SpotStore? = null
   val itemDays: TextView = view.findViewById(R.id.recordItemDate)

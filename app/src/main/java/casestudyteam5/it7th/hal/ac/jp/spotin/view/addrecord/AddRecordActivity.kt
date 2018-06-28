@@ -8,37 +8,41 @@ import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
+import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
+import casestudyteam5.it7th.hal.ac.jp.spotin.casestudyteam5.it7th.hal.ac.jp.spotin.addrecord.AddRecordRecyclerAdapter
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.DBFactory
+import casestudyteam5.it7th.hal.ac.jp.spotin.data.TravelRecord
+import casestudyteam5.it7th.hal.ac.jp.spotin.util.PermissionUtil
+import kotlinx.android.synthetic.main.activity_add_record.*
 
-class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
+class AddRecordActivity :
+  AppCompatActivity(),
+  AddRecordContract.View,
+  AddRecordRecyclerAdapter.ViewHolder.OnItemClickListener {
 
-  lateinit var image: ImageView
   lateinit var presenter: AddRecordPresenter
   val place_id: String by lazy { intent.extras.getString("place_id") }
   val place_name: String by lazy { intent.extras.getString("place_name") }
   var comment: String = ""
   private var imageUri: Uri? = null
-  override var imagepassList: List<Uri> = listOf()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_add_record)
+
+    presenter = AddRecordPresenter(this, DBFactory.provideSpotRepository(this))
     val placeName: TextView = findViewById(R.id.placeName)
     placeName.text = place_name
 
-    //Create Presenter
-    //TODO:Repositoryのインスタンスを渡す
-    presenter = AddRecordPresenter(this, DBFactory.provideSpotRepository(this))
+    showImageList(presenter.getImageList())
+
     val chooseBtn: Button = findViewById(R.id.takeImage)
     chooseBtn.setOnClickListener {
       //permission確認後カメラ起動
@@ -52,6 +56,18 @@ class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
     get() = intent.extras.getBoolean("update")//遷移元から更新か新規かのフラグを受け取る
 
   override fun selfcheckPermmision() {
+    if (PermissionUtil.isPermissionGranted(this, Manifest.permission.CAMERA)) {
+      if (PermissionUtil.isPermissionGranted(this, Manifest.permission_group.STORAGE)) takeImage()
+      else PermissionUtil.requestPermission(this, Manifest.permission_group.STORAGE, CAMERAPERMISSIONS,
+        "get Permission Error",
+        "To retry please press the OK button again")
+      PermissionUtil.requestPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE, CAMERAPERMISSIONS,
+        "get Permission Error",
+        "To retry please press the OK button again")
+    } else PermissionUtil.requestPermission(this, Manifest.permission.CAMERA, CAMERAPERMISSIONS,
+      "get Permission Error",
+      "To retry please press the OK button again")
+    /*
     // パーミッションの確認
     if (ContextCompat.checkSelfPermission(this,
         Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
@@ -66,11 +82,11 @@ class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
       //パーミッションをリクエストします。
       AlertDialog.Builder(this)
-        .setPositiveButton(android.R.string.ok, { _, _ ->
+        .setPositiveButton(android.R.string.ok) { _, _ ->
           // OKボタンがタップしパーミッションをリクエスト
           ActivityCompat.requestPermissions(this,
-            arrayOf(Manifest.permission.CAMERA), PERMISSIONS)
-        })
+            arrayOf(Manifest.permission.CAMERA), CAMERAPERMISSIONS)
+        }
         .show()
       return
     }
@@ -79,7 +95,8 @@ class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
     ActivityCompat.requestPermissions(this,
       arrayOf(Manifest.permission.CAMERA,
         Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE), PERMISSIONS)
+        Manifest.permission.WRITE_EXTERNAL_STORAGE), CAMERAPERMISSIONS)
+        */
   }
 
   override fun takeImage() {
@@ -97,10 +114,13 @@ class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
     }
   }
 
-  override fun showImage(imagepass: Uri) {
-    image = findViewById(R.id.image)
-    image.visibility = View.VISIBLE
-    image.setImageURI(imagepass)
+  override fun showImageList(imagepassList: List<TravelRecord.SpotImage>) {
+    recycleAddImageView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+    recycleAddImageView.adapter = AddRecordRecyclerAdapter(this, this, imagepassList)
+  }
+
+  override fun onItemClick(view: View, position: Int) {
+    presenter.deleteListPositon(position)
   }
 
   override fun editComment() {
@@ -118,9 +138,10 @@ class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
       AlertDialog.Builder(this)
         .setTitle("Editing in progress")
         .setMessage("Would you like to cancel editing?")
-        .setPositiveButton(android.R.string.ok, { _, _ ->
+        .setPositiveButton(android.R.string.ok) { _, _ ->
           //TODO:遷移元に戻る
-        })
+          finish()
+        }
         .create()
         .show()
     }
@@ -132,7 +153,7 @@ class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
     if (this.comment.isEmpty() && this.imageUri == null) {
       showEmpryError()
     } else {
-      presenter.saveRecord(this.place_id, this.comment, this.place_name, this.imagepassList)
+      presenter.saveRecord(this.place_id, this.comment, this.place_name)
       Toast.makeText(this, "success", Toast.LENGTH_SHORT).show()
       finish()
     }
@@ -141,34 +162,38 @@ class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
     if (requestCode == CHOOSERS) {
-      val uri: Uri? = data?.data
-      uri?.let {
-        imageUri = presenter.getFileSchemeUri(it)
-        this.imagepassList += presenter.editImageList(imageUri!!) }
-      ?: this.imageUri?.let { this.imagepassList += presenter.editImageList(it) }
+      data?.data?.let { imageUri = it }
+      //TODO: presenterにリスト捜査用のメソッド追加
+      presenter.editImageList(presenter.createImageSpot(place_id, imageUri))
     }
   }
 
   override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-    if (requestCode == PERMISSIONS) {
+    if (requestCode == CAMERAPERMISSIONS &&
+      grantResults.isNotEmpty() &&
+      grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+      //takeImage()
+      selfcheckPermmision()
+    } else return
+    /*if (requestCode == CAMERAPERMISSIONS) {
       if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])) {
           AlertDialog.Builder(this)
             .setTitle("get Permission Error")
             .setMessage("To retry please press the OK button again")
-            .setPositiveButton(android.R.string.ok, { _, _ ->
+            .setPositiveButton(android.R.string.ok) { _, _ ->
               ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.CAMERA), PERMISSIONS)
-            })
+                arrayOf(Manifest.permission.CAMERA), CAMERAPERMISSIONS)
+            }
             .create()
             .show()
         } else {
           AlertDialog.Builder(this)
             .setTitle("get Permission Error")
             .setMessage("I will not allow it in the future but it was selected.")
-            .setPositiveButton(android.R.string.ok, { _, _ ->
+            .setPositiveButton(android.R.string.ok) { _, _ ->
               //TODO:設定画面への遷移
-            })
+            }
             .create()
             .show()
         }
@@ -176,11 +201,11 @@ class AddRecordActivity : AppCompatActivity(), AddRecordContract.View {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         takeImage()
       }
-    }
+    }*/
   }
 
   companion object {
     const val CHOOSERS = 1000
-    const val PERMISSIONS = 2000
+    const val CAMERAPERMISSIONS = 2000
   }
 }

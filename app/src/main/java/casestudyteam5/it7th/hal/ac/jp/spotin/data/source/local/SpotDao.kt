@@ -20,9 +20,9 @@ import java.util.Date
   fun addSpotImage(spotimageList: List<TravelRecord.SpotImage>)
 
   @Update
-  fun upDataSpot(travelRecord: TravelRecord)
+  fun upDateSpot(travelRecord: TravelRecord)
 
-  @Query("SELECT * FROM travel_record INNER JOIN spot_image ON travel_record.place_id = spot_image.place_id ")
+  @Query("SELECT * FROM travel_record")
   fun getAllSpot(): List<SpotStore>
 
   @Query ("SELECT * FROM travel_record " +
@@ -31,7 +31,7 @@ import java.util.Date
   fun getSpotPlace(place_id: String): SpotStore?
 
   @Query("SELECT * FROM travel_record INNER JOIN spot_image ON travel_record.place_id WHERE date = (:date)")
-  fun getSpotDate(date: Date): List<SpotStore>
+  fun getSpotData(date: Date): List<SpotStore>
 
   @Delete
   fun deletSpot(travelRecord: TravelRecord) //主キーで検索して削除

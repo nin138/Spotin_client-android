@@ -3,6 +3,7 @@ package casestudyteam5.it7th.hal.ac.jp.spotin.view.records
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.DBFactory
@@ -25,7 +26,9 @@ class TravelRecordListActivity : AppCompatActivity(), RecordListContract.View, R
       mainRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
-    override fun onItemClick(view: View, position: Int) {
+    override fun onItemClick(view: View, spotStore: SpotStore) {
+      Log.d("item", spotStore.spotImageList?.get(0)?.image_pass)
+      presenter.openDetail(spotStore)
         //TODO: 詳細へ遷移
     }
 
@@ -50,6 +53,6 @@ class TravelRecordListActivity : AppCompatActivity(), RecordListContract.View, R
     }
 
     override fun showNoRecordMessage() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

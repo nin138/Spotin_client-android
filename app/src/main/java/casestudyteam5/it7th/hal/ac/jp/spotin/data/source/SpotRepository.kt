@@ -21,7 +21,7 @@ class SpotRepository(val spotDao: SpotDao, val appExecutor: AppExecutor) : SpotD
 
   override fun getSpotDate(date: Date, loadSpotCallback: SpotDataSource.LoadSpotCallback) {
     appExecutor.localExecutor.execute {
-      val spot = spotDao.getSpotDate(date)
+      val spot = spotDao.getSpotData(date)
       appExecutor.mainThread.execute {
         if (spot.isEmpty()) {
           loadSpotCallback.onLoadFailed()
@@ -50,7 +50,7 @@ class SpotRepository(val spotDao: SpotDao, val appExecutor: AppExecutor) : SpotD
   }
 
   override fun upDataSpot(travelRecord: TravelRecord) {
-    appExecutor.localExecutor.execute { spotDao.upDataSpot(travelRecord) }
+    appExecutor.localExecutor.execute { spotDao.upDateSpot(travelRecord) }
   }
 
   override fun addSpotImage(spotimageList: List<TravelRecord.SpotImage>) {

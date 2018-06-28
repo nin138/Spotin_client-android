@@ -11,6 +11,11 @@
     android:text="map表示"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />
+  <TextView
+      android:id="@+id/to_camera"
+      android:text="camera表示"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
 
   <TextView
       android:id="@+id/to_list"

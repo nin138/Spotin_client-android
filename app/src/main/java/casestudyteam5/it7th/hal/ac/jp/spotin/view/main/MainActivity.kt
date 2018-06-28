@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
+import casestudyteam5.it7th.hal.ac.jp.spotin.view.addrecord.AddRecordActivity
 import casestudyteam5.it7th.hal.ac.jp.spotin.view.map.MapActivity
 import casestudyteam5.it7th.hal.ac.jp.spotin.view.records.TravelRecordListActivity
 
@@ -16,6 +17,13 @@ class MainActivity : FragmentActivity() {
 
     to_map.setOnClickListener {
       val intent = Intent(this@MainActivity, MapActivity::class.java)
+      startActivity(intent)
+    }
+
+    to_camera.setOnClickListener {
+      val intent = Intent(this@MainActivity, AddRecordActivity::class.java)
+      intent.putExtra("place_id", "test")
+      intent.putExtra("place_name", "testplace")
       startActivity(intent)
     }
 
