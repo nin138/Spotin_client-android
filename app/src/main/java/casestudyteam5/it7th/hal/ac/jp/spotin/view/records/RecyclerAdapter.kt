@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
@@ -42,14 +41,13 @@ class RecyclerAdapter(
   override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
     val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd E")
     holder.let {
-      it.spotStore = itemList.get(position)
-      it.itemDays.text = simpleDateFormat.format(itemList.get(position).travelRecord.date)
-      it.itemComment.text = itemList.get(position).travelRecord.comment
-      it.itemPlaceName.text = itemList.get(position).travelRecord.place_name
-      itemList.get(position).spotImageList?.forEach { Log.d("imagepass", it.image_pass) }
-      it.itemView.setOnClickListener { itemClickListener.onItemClick(it, itemList.get(position)) }
+      it.spotStore = itemList[position]
+      it.itemDays.text = simpleDateFormat.format(itemList[position].travelRecord.date)
+      it.itemComment.text = itemList[position].travelRecord.comment
+      it.itemPlaceName.text = itemList[position].travelRecord.place_name
+      it.itemView.setOnClickListener { itemClickListener.onItemClick(it, itemList[position]) }
     }
-    if (itemList.get(position).spotImageList?.size != 0) {
+    if (itemList[position].spotImageList?.size != 0) {
       val parcelFileDescriptor = context.contentResolver
         .openFileDescriptor(Uri.parse(itemList.get(position).spotImageList?.get(0)?.image_pass), "r") ?: return
       val fileDescriptor = parcelFileDescriptor.fileDescriptor
