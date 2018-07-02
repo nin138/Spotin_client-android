@@ -1,5 +1,9 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin.map
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.app.DialogFragment
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -22,6 +26,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
+import android.view.LayoutInflater
+import android.view.View
 
 class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -31,6 +37,7 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
   private var gps: GPS? = null
   @Inject
   lateinit var presenter: MapPresenter
+  var PLACE_PICKER_REQUEST = 1
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -68,7 +75,16 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
   }
 
   override fun onMarkerClick(marker: Marker): Boolean {
-    presenter.onMarkerClicked(marker)
+    val dialog = SpotDialog()
+    // 各種ボタン押下時の処理
+    dialog.onOkClickListener = DialogInterface.OnClickListener { dialog, id ->
+      presenter.onMarkerClicked(marker)
+    }
+    dialog.onCancelClickListener = DialogInterface.OnClickListener { dialog, id ->
+    }
+
+    dialog.show(fragmentManager, "tag")
+
     return false
   }
 
@@ -130,5 +146,28 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
       .strokeColor(Color.BLACK)
       .strokeWidth(5f)
       .fillColor(0x30ff0000)
+  }
+}
+
+class SpotDialog : DialogFragment() {
+  var onOkClickListener: DialogInterface.OnClickListener? = null
+  var onCancelClickListener: DialogInterface.OnClickListener? = null
+  override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    val builder = AlertDialog.Builder(activity)
+    val inflater: LayoutInflater = LayoutInflater.from(activity)
+    val content: View = inflater.inflate(R.layout.dialog_setting, null)
+
+    builder.setView(content)
+
+    builder.setMessage("Spot")
+      .setPositiveButton("はい", onOkClickListener)
+      .setNegativeButton("キャンセル", onCancelClickListener)
+    return builder.create()
+  }
+
+  override fun onPause() {
+    super.onPause()
+    // onPause でダイアログを閉じる場合
+    dismiss()
   }
 }
