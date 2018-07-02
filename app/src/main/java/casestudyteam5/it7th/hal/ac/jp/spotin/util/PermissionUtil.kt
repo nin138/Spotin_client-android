@@ -11,10 +11,12 @@ import android.support.v7.app.AlertDialog
 import android.util.Log
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.DexterBuilder
+import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.karumi.dexter.listener.single.PermissionListener
 
 class PermissionUtil {
@@ -76,11 +78,12 @@ class PermissionUtil {
   class RequestBuilder private constructor(private val activity: Activity) {
 
     private var permission: String? = null
+    private var permissions: List<String>? = null
     private var title: String? = null
     private var msg: String? = null
     private var onCancel: (() -> Unit)? = null
-    private var onGranted: ((PermissionGrantedResponse?) -> Unit)? = null
-    private var onDenied: ((PermissionDeniedResponse?) -> Unit)? = null
+    private var onGranted: ((List<PermissionGrantedResponse>?) -> Unit)? = null
+    private var onDenied: ((List<PermissionDeniedResponse>?) -> Unit)? = null
 
     companion object {
       fun withActivity(activity: Activity): RequestBuilder {
@@ -93,6 +96,11 @@ class PermissionUtil {
       return this
     }
 
+    fun permissions(permissions: List<String>): RequestBuilder {
+      this.permissions = permissions
+      return this
+    }
+
     fun rationale(title: String, message: String, onCancel: () -> Unit): RequestBuilder {
       this.title = title
       this.msg = message
@@ -100,43 +108,60 @@ class PermissionUtil {
       return this
     }
 
-    fun onPermissionDenied(onDenied: (PermissionDeniedResponse?) -> Unit): RequestBuilder {
+    fun onPermissionDenied(onDenied: (List<PermissionDeniedResponse>?) -> Unit): RequestBuilder {
       this.onDenied = onDenied
       return this
     }
 
-    fun onPermissionGranted(onGranted: (PermissionGrantedResponse?) -> Unit): RequestBuilder {
+    fun onPermissionGranted(onGranted: (List<PermissionGrantedResponse>?) -> Unit): RequestBuilder {
       this.onGranted = onGranted
       return this
     }
 
     fun build(): DexterBuilder {
-      return Dexter.withActivity(activity)
-        .withPermission(permission)
-        .withListener(object : PermissionListener {
-          override fun onPermissionRationaleShouldBeShown(p0: PermissionRequest?, token: PermissionToken?) {
-            AlertDialog.Builder(activity)
-              .setTitle(title)
-              .setMessage(msg)
-              .setCancelable(false)
-              .setNegativeButton(android.R.string.cancel) { dialog: DialogInterface, i: Int ->
-                dialog.dismiss()
-                token?.cancelPermissionRequest()
-                onCancel?.let { it() }
-              }
-              .setPositiveButton(android.R.string.ok) { dialog: DialogInterface, _ ->
-                dialog.dismiss()
-                token?.continuePermissionRequest()
-              }
-              .show()
-          }
-          override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
-            onDenied?.let { it(p0) }
-          }
-          override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
-            onGranted?.let { it(p0) }
-          }
-        }).withErrorListener { e -> Log.e("PERMISSION", e.toString()) }
+      when {
+        this.permission != null -> return Dexter.withActivity(activity)
+          .withPermission(permission)
+          .withListener(object : PermissionListener {
+            override fun onPermissionRationaleShouldBeShown(p0: PermissionRequest?, token: PermissionToken?) {
+              showDialog(token)
+            }
+            override fun onPermissionDenied(res: PermissionDeniedResponse?) {
+              onDenied?.let { it(if(res != null)listOf(res) else listOf()) }
+            }
+            override fun onPermissionGranted(res: PermissionGrantedResponse?) {
+              onGranted?.let { it(if(res != null)listOf(res) else listOf()) }
+            }
+          }).withErrorListener { e -> Log.e("ERR::PERMISSION", e.toString()) }
+
+        this.permissions?.isNotEmpty() == true -> return Dexter.withActivity(activity)
+          .withPermissions(permissions).withListener(object : MultiplePermissionsListener {
+            override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
+              showDialog(token)
+            }
+            override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+              if(report?.deniedPermissionResponses?.isNotEmpty() == true) onDenied?.let { it(report.deniedPermissionResponses) }
+              else onGranted?.let { it(report?.grantedPermissionResponses) }
+            }
+          }).withErrorListener { e -> Log.e("ERR::PERMISSION", e.toString()) }
+        else -> throw Error("Permission not selected")
+      }
+    }
+    private fun showDialog(token: PermissionToken?) {
+      AlertDialog.Builder(activity)
+        .setTitle(title)
+        .setMessage(msg)
+        .setCancelable(false)
+        .setNegativeButton(android.R.string.cancel) { dialog: DialogInterface, i: Int ->
+          dialog.dismiss()
+          token?.cancelPermissionRequest()
+          onCancel?.let { it() }
+        }
+        .setPositiveButton(android.R.string.ok) { dialog: DialogInterface, _ ->
+          dialog.dismiss()
+          token?.continuePermissionRequest()
+        }
+        .show()
     }
   }
 }
