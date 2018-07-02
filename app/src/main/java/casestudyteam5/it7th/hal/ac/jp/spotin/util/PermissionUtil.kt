@@ -96,8 +96,8 @@ class PermissionUtil {
       return this
     }
 
-    fun permissions(permissions: List<String>): RequestBuilder {
-      this.permissions = permissions
+    fun permissions(vararg permissions: String): RequestBuilder {
+      this.permissions = permissions.asList()
       return this
     }
 
