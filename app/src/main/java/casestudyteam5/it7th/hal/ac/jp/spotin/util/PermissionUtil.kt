@@ -127,20 +127,22 @@ class PermissionUtil {
               showDialog(token)
             }
             override fun onPermissionDenied(res: PermissionDeniedResponse?) {
-              onDenied?.let { it(if(res != null)listOf(res) else listOf()) }
+              onDenied?.let { it(if (res != null)listOf(res) else listOf()) }
             }
             override fun onPermissionGranted(res: PermissionGrantedResponse?) {
-              onGranted?.let { it(if(res != null)listOf(res) else listOf()) }
+              onGranted?.let { it(if (res != null)listOf(res) else listOf()) }
             }
           }).withErrorListener { e -> Log.e("ERR::PERMISSION", e.toString()) }
 
         this.permissions?.isNotEmpty() == true -> return Dexter.withActivity(activity)
           .withPermissions(permissions).withListener(object : MultiplePermissionsListener {
-            override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
+            override fun onPermissionRationaleShouldBeShown
+              (permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
               showDialog(token)
             }
             override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-              if(report?.deniedPermissionResponses?.isNotEmpty() == true) onDenied?.let { it(report.deniedPermissionResponses) }
+              if (report?.deniedPermissionResponses?.isNotEmpty() == true)
+                onDenied?.let { it(report.deniedPermissionResponses) }
               else onGranted?.let { it(report?.grantedPermissionResponses) }
             }
           }).withErrorListener { e -> Log.e("ERR::PERMISSION", e.toString()) }
