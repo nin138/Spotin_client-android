@@ -1,7 +1,6 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin.view.map
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -43,12 +42,20 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
   override fun onResume() {
     super.onResume()
     gps = GPS(this)
-    if (PermissionUtil.isPermissionGranted(this, GPS.PERMISSION)) startGPS()
-    else PermissionUtil.requestPermission(this, GPS.PERMISSION, GPS.REQUEST_CODE, "REQUIRE PERMISSION GPS ", "msg" )
+    PermissionUtil.RequestBuilder
+      .withActivity(this)
+      .permission(GPS.PERMISSION)
+      .rationale(title = "permission requireed", message = "くれ") { finish() }
+      .onPermissionDenied { finish() }
+      .onPermissionGranted { startGPS() }
+      .build()
+      .check()
   }
+
   override fun onPause() {
     super.onPause()
     gps?.stop()
+    presenter.onPause()
   }
 
   override fun onMapReady(map: GoogleMap) {
@@ -58,22 +65,14 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
     map.moveCamera(CameraUpdateFactory.zoomTo(17f))
   }
 
-  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    if (requestCode == GPS.REQUEST_CODE &&
-      grantResults.isNotEmpty() &&
-      grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-      startGPS()
-    } else finish()
-  }
-
-  override fun onMarkerClick(marker: Marker): Boolean {
-    presenter.onMarkerClicked(marker)
+  override fun onMarkerClick(marker: Marker?): Boolean {
+    marker?.let { presenter.onMarkerClicked(it) }
     return false
   }
 
   override fun updateYouAreHere(location: LatLng) {
     map?.animateCamera(CameraUpdateFactory.newLatLng(location))
+
     if (yourMarker != null) yourMarker?.position = location
     else yourMarker = map?.addMarker(createYourHereMarkerOption(location))
     if (range != null) range?.center = location
