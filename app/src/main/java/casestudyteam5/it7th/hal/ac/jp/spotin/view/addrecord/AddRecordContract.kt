@@ -12,7 +12,6 @@ interface AddRecordContract {
     fun takeImage() //画像の追加
     fun showImageList(imagepassList: List<TravelRecord.SpotImage>)
     fun editComment()
-    fun selfCheckPermission()
     fun showEmptyError()
     fun cancel()
     fun decision()
