@@ -8,12 +8,18 @@ import android.arch.persistence.room.TypeConverters
 import android.arch.persistence.room.migration.Migration
 import android.content.Context
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.DateTypeConverter
+import casestudyteam5.it7th.hal.ac.jp.spotin.data.LocationRecord
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.TravelRecord
 
-@Database(entities = [(TravelRecord::class), (TravelRecord.SpotImage::class)], version = 1, exportSchema = true)
+@Database(entities = [
+  (TravelRecord::class),
+  (TravelRecord.SpotImage::class),
+  (LocationRecord::class)],
+  version = 1, exportSchema = true)
 @TypeConverters(DateTypeConverter::class)
 abstract class SpotDatabase : RoomDatabase() {
   abstract fun spotDao(): SpotDao
+  abstract fun locationDao(): LocationDao
 
   companion object {
 
