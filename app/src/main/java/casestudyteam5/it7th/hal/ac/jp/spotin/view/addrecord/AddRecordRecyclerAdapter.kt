@@ -1,4 +1,4 @@
-package casestudyteam5.it7th.hal.ac.jp.spotin.casestudyteam5.it7th.hal.ac.jp.spotin.addrecord
+package casestudyteam5.it7th.hal.ac.jp.spotin.view.addrecord
 
 import android.content.Context
 import android.graphics.BitmapFactory
@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.TravelRecord
-import kotlinx.android.synthetic.main.add_image_list.view.*
 
 class AddRecordRecyclerAdapter(
   private val context: Context,

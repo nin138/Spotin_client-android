@@ -3,7 +3,6 @@ package casestudyteam5.it7th.hal.ac.jp.spotin.view.addrecord
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -14,7 +13,6 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
-import casestudyteam5.it7th.hal.ac.jp.spotin.casestudyteam5.it7th.hal.ac.jp.spotin.addrecord.AddRecordRecyclerAdapter
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.DBFactory
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.TravelRecord
 import casestudyteam5.it7th.hal.ac.jp.spotin.util.PermissionUtil
@@ -42,24 +40,26 @@ class AddRecordActivity :
     showImageList(presenter.getImageList())
 
     //選択ボタン押下
-    takeImage.setOnClickListener { selfCheckPermission() }
+    takeImage.setOnClickListener {
+
+      PermissionUtil.RequestBuilder
+        .withActivity(this)
+        .permissions(
+          Manifest.permission.CAMERA,
+          Manifest.permission.READ_EXTERNAL_STORAGE,
+          Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        .rationale("req", "sfhakle;ig[wjnegiubehgneokeroihgiowhiogq") { finish() } //todo
+        .onPermissionDenied { finish() } //todo
+        .onPermissionGranted { takeImage() }
+        .build()
+        .check()
+    }
     //決定ボタン押下
     decision.setOnClickListener { decision() }
   }
 
   override val isUpdate: Boolean
     get() = intent.extras.getBoolean("update")//遷移元から更新か新規かのフラグを受け取る
-
-  override fun selfCheckPermission() {
-    if (PermissionUtil.isPermissionGranted(this, Manifest.permission.CAMERA)) {
-      if (PermissionUtil.isPermissionGranted(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) takeImage()
-      else PermissionUtil.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, CAMERAPERMISSIONS,
-          "get STORAGE Permission Error",
-          "To retry please press the OK button again")
-    } else PermissionUtil.requestPermission(this, Manifest.permission.CAMERA, CAMERAPERMISSIONS,
-      "get Permission Error",
-      "To retry please press the OK button again")
-  }
 
   override fun takeImage() {
     //カメラ,ギャラリー呼び出し
@@ -129,14 +129,6 @@ class AddRecordActivity :
       presenter.editImageList(presenter.createImageSpot(place_id, imageUri))
       presenter.showImage()
     }
-  }
-
-  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-    if (requestCode == CAMERAPERMISSIONS &&
-      grantResults.isNotEmpty() &&
-      grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-      selfCheckPermission()
-    } else return
   }
 
   companion object {

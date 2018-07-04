@@ -135,15 +135,15 @@ class PermissionUtil {
           }).withErrorListener { e -> Log.e("ERR::PERMISSION", e.toString()) }
 
         this.permissions?.isNotEmpty() == true -> return Dexter.withActivity(activity)
-          .withPermissions(permissions).withListener(object : MultiplePermissionsListener {
+          .withPermissions(permissions!!)
+          .withListener(object : MultiplePermissionsListener {
             override fun onPermissionRationaleShouldBeShown
               (permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
               showDialog(token)
             }
-            override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-              if (report?.deniedPermissionResponses?.isNotEmpty() == true)
-                onDenied?.let { it(report.deniedPermissionResponses) }
-              else onGranted?.let { it(report?.grantedPermissionResponses) }
+            override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+              if (report.areAllPermissionsGranted()) onGranted?.let { it(report.grantedPermissionResponses) }
+              else onDenied?.let { it(report.deniedPermissionResponses) }
             }
           }).withErrorListener { e -> Log.e("ERR::PERMISSION", e.toString()) }
         else -> throw Error("Permission not selected")
