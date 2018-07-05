@@ -63,7 +63,6 @@ class AddRecordRecyclerAdapter(
     interface OnItemClickListener {
       fun onItemClick(view: View, position: Int)
     }
-
     var spotImage: TravelRecord.SpotImage? = null
     val itemImage: ImageView = view.findViewById(R.id.addImage)
   }

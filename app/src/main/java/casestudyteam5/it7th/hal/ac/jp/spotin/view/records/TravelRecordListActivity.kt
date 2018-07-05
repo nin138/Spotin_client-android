@@ -1,5 +1,6 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin.view.records
 
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -10,9 +11,12 @@ import casestudyteam5.it7th.hal.ac.jp.spotin.data.DBFactory
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotStore
 import kotlinx.android.synthetic.main.activity_travel_record_list.*
 
-class TravelRecordListActivity : AppCompatActivity(), RecordListContract.View, RecyclerViewHolder.ItemClickListener {
+class TravelRecordListActivity : AppCompatActivity(),
+  RecordListContract.View,
+  RecyclerViewHolder.onItemClickListener,
+  HorizontalRecyclerViewAdapter.ViewHolder.OnImageClickListener {
 
-    lateinit var presenter: RecordListPresenter
+  lateinit var presenter: RecordListPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +26,7 @@ class TravelRecordListActivity : AppCompatActivity(), RecordListContract.View, R
     }
 
     override fun showList(list: List<SpotStore>) {
-      mainRecyclerView.adapter = RecyclerAdapter(this, this, list)
+      mainRecyclerView.adapter = RecyclerAdapter(this, this, this, list)
       mainRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
@@ -31,6 +35,11 @@ class TravelRecordListActivity : AppCompatActivity(), RecordListContract.View, R
       presenter.openDetail(spotStore)
         //TODO: 詳細へ遷移
     }
+
+  override fun onImageClick(view: View, uri: Uri) {
+    Log.d("debagUri", uri.toString())
+    //TODO:画像の詳細画面遷移　
+  }
 
     override fun showSortMonth() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
