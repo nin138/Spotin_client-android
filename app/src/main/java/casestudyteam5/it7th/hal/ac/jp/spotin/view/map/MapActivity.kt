@@ -1,10 +1,15 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin.view.map
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.AnimationUtils
+import android.widget.Button
+import android.widget.TextView
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.entity.Spot
 import casestudyteam5.it7th.hal.ac.jp.spotin.view.addrecord.AddRecordActivity
@@ -76,8 +81,31 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
     map.moveCamera(CameraUpdateFactory.zoomTo(17f))
   }
 
-  override fun onMarkerClick(marker: Marker?): Boolean {
-    marker?.let { presenter.onMarkerClicked(it) }
+  override fun onMarkerClick(marker: Marker): Boolean {
+
+    val builder = AlertDialog.Builder(this, R.style.dialog_setting)
+    val inflater: LayoutInflater = LayoutInflater.from(this)
+    val content: View = inflater.inflate(R.layout.dialog_setting, null)
+
+    builder.setView(content)
+
+    val tv: TextView = content?.findViewById(R.id.name)
+    val add: Button = content?.findViewById(R.id.add)
+    val cancel: Button = content?.findViewById(R.id.cancel)
+
+    tv.text = marker?.title
+    add.setOnClickListener { marker?.let { presenter.onMarkerClicked(it) } }
+
+    val dBuilder = builder.create()
+    dBuilder.setCanceledOnTouchOutside(false)
+
+    var viewGroup = dBuilder.window.decorView
+    viewGroup.startAnimation(AnimationUtils.loadAnimation(this, R.anim.in_animation))
+
+    dBuilder.show()
+
+    cancel.setOnClickListener { dBuilder.dismiss() }
+
     return false
   }
 
