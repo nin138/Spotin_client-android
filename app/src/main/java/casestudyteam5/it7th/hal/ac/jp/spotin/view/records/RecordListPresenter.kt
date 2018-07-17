@@ -1,5 +1,6 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin.view.records
 
+import android.util.Log
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotDataSource
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotRepository
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotStore
@@ -24,7 +25,9 @@ class RecordListPresenter(
   }
 
   override fun openDetail(spot: SpotStore) {
-//    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    spot.spotImageList?.forEach {
+      Log.d("openDetail", it.image_pass)
+    }
   }
 
   override fun sortList(recordSortType: RecordSortType) {

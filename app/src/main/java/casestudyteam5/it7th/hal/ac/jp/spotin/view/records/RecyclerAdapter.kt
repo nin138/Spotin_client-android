@@ -48,7 +48,7 @@ class RecyclerAdapter(
       it.itemView.setOnClickListener { itemClickListener.onItemClick(it, itemList[position]) }
     }
     //nest recyclerview
-    itemList[position].spotImageList?.let {
+    itemList[position].let {
       val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
       holder.nestRecycle.layoutManager = linearLayoutManager
       holder.nestRecycle.adapter = HorizontalRecyclerViewAdapter(context, it, imageClickListener)

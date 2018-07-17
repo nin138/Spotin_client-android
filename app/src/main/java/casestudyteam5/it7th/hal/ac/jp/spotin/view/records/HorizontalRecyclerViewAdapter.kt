@@ -9,16 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
-import casestudyteam5.it7th.hal.ac.jp.spotin.data.TravelRecord
+import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotStore
 
 class HorizontalRecyclerViewAdapter(
   private val context: Context,
-  travelRecord: List<TravelRecord.SpotImage>,
+  private val store: SpotStore,
   private val imageClickListener: ViewHolder.OnImageClickListener
 ) :
   RecyclerView.Adapter<HorizontalRecyclerViewAdapter.ViewHolder>() {
 
-  private var mList: List<TravelRecord.SpotImage>? = travelRecord
+  private var mList = store.spotImageList
 
   override fun getItemCount(): Int {
     return mList!!.size
@@ -41,7 +41,7 @@ class HorizontalRecyclerViewAdapter(
         parcelFileDescriptor.close()
         it.itemImage.setImageBitmap(bitmap)
         it.itemImage.setOnClickListener {
-          imageClickListener.onImageClick(it, Uri.parse(mList?.get(position)?.image_pass))
+          imageClickListener.onImageClick(it, position, store)
         }
       }
     }
@@ -50,7 +50,7 @@ class HorizontalRecyclerViewAdapter(
   class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     interface OnImageClickListener {
-      fun onImageClick(view: View, uri: Uri)
+      fun onImageClick(view: View, position: Int, store: SpotStore)
     }
 
     val itemImage: ImageView = view.findViewById(R.id.addImage)
