@@ -6,11 +6,11 @@ import android.view.View
 open class FlickListener
 @JvmOverloads constructor(
   private val listener: Listener,
-  private val play: Float = DEFAULT_PLAY
+  private val reference_distance: Float = DEFAULT_PLAY
 ) : View.OnTouchListener {
 
-  private var lastX: Float = 0.toFloat()
-  private var lastY: Float = 0.toFloat()
+  private var lastX: Float = 0f
+  private var lastY: Float = 0f
 
   //フリックイベントのリスナー
 
@@ -41,10 +41,10 @@ open class FlickListener
     // x -> y の順で判定しているので、斜めにフリックした場合はLeft,Rightのイベントの方が優先される
     // Up,Downを優先したい場合は、条件判定の順序を入れ替えること
     when {
-        currentX + play < lastX -> listener.onFlickToLeft()
-        lastX < currentX - play -> listener.onFlickToRight()
-        currentY + play < lastY -> listener.onFlickToUp()
-        lastY < currentY - play -> listener.onFlickToDown()
+        currentX + reference_distance < lastX -> listener.onFlickToLeft()
+        lastX < currentX - reference_distance -> listener.onFlickToRight()
+        currentY + reference_distance < lastY -> listener.onFlickToUp()
+        lastY < currentY - reference_distance -> listener.onFlickToDown()
     }
   }
 

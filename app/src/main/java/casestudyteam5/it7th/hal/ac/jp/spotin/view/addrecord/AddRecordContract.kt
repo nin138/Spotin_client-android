@@ -9,7 +9,7 @@ interface AddRecordContract {
 
   interface View {
     val isUpdate: Boolean
-    fun takeImage() //画像の追加
+    fun takeImage(checkCode: Int) //画像の追加
     fun showImageList(imagepassList: List<TravelRecord.SpotImage>)
     fun editComment()
     fun showEmptyError()

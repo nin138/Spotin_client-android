@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat
 class RecyclerAdapter(
   private val context: Context,
   private val itemClickListener: RecyclerViewHolder.onItemClickListener,
-  private val imageClickListener: HorizontalRecyclerViewAdapter.ViewHolder.OnImageClickListener,
+  private val imageClickListener: ImageCarouselRecyclerViewAdapter.ViewHolder.OnImageClickListener,
   private val itemList: List<SpotStore>
 ) : RecyclerView.Adapter<RecyclerViewHolder>() {
 
@@ -51,7 +51,7 @@ class RecyclerAdapter(
     itemList[position].let {
       val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
       holder.nestRecycle.layoutManager = linearLayoutManager
-      holder.nestRecycle.adapter = HorizontalRecyclerViewAdapter(context, it, imageClickListener)
+      holder.nestRecycle.adapter = ImageCarouselRecyclerViewAdapter(context, it, imageClickListener)
     }
   }
 }

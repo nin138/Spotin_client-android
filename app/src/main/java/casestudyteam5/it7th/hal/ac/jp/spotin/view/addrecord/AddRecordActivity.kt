@@ -39,40 +39,52 @@ class AddRecordActivity :
 
     showImageList(presenter.getImageList())
 
-    //選択ボタン押下
-    takeImage.setOnClickListener {
-
-      PermissionUtil.RequestBuilder
-        .withActivity(this)
-        .permissions(
-          Manifest.permission.CAMERA,
-          Manifest.permission.READ_EXTERNAL_STORAGE,
-          Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        .rationale("req", "sfhakle;ig[wjnegiubehgneokeroihgiowhiogq") { finish() } //todo
-        .onPermissionDenied { finish() } //todo
-        .onPermissionGranted { takeImage() }
-        .build()
-        .check()
-    }
     //決定ボタン押下
     decision.setOnClickListener { decision() }
+    //キャンセルボタン押下
+    canselBtn.setOnClickListener { finish() }
+    //画像選択処理
+    cameraBtn.setOnClickListener { permissionCheck(CAMERACODE) }
+    storageBtn.setOnClickListener { permissionCheck(STORAGECODE) }
+    //
+  }
+
+  private fun permissionCheck(checkCode: Int) {
+    PermissionUtil.RequestBuilder
+      .withActivity(this)
+      .permissions(
+        Manifest.permission.CAMERA,
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+      .rationale("req", "sfhakle;ig[wjnegiubehgneokeroihgiowhiogq") { finish() } //todo
+      .onPermissionDenied { finish() } //todo
+      .onPermissionGranted { takeImage(checkCode) }
+      .build()
+      .check()
   }
 
   override val isUpdate: Boolean
     get() = intent.extras.getBoolean("update")//遷移元から更新か新規かのフラグを受け取る
 
-  override fun takeImage() {
-    //カメラ,ギャラリー呼び出し
-    imageUri = presenter.getCameraUri(context = this)
-    imageUri?.let {
-      val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply { putExtra(MediaStore.EXTRA_OUTPUT, it) }
-      val galleryIntent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-        addCategory(Intent.CATEGORY_OPENABLE)
-        type = "image/*"
+  override fun takeImage(checkCode: Int) {
+    when (checkCode) {
+      CAMERACODE -> {
+        imageUri = presenter.getCameraUri(context = this)
+        imageUri?.let {
+          val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply { putExtra(MediaStore.EXTRA_OUTPUT, it) }
+          val intent = Intent.createChooser(cameraIntent, "take Image")
+          startActivityForResult(intent, CHOOSERS)
+        }
       }
-      val intent = Intent.createChooser(cameraIntent, "take Image").apply {
-        putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(galleryIntent)) }
-      startActivityForResult(intent, CHOOSERS)
+
+      STORAGECODE -> {
+        val galleryIntent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+          addCategory(Intent.CATEGORY_OPENABLE)
+          type = "image/*"
+        }
+        val intent = Intent.createChooser(galleryIntent, "take Image")
+        startActivityForResult(intent, CHOOSERS)
+      }
     }
   }
 
@@ -133,6 +145,7 @@ class AddRecordActivity :
 
   companion object {
     const val CHOOSERS = 1000
-    const val CAMERAPERMISSIONS = 2000
+    const val CAMERACODE = 100
+    const val STORAGECODE = 200
   }
 }

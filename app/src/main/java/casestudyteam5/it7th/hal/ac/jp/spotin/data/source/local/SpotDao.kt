@@ -30,7 +30,7 @@ import java.util.Date
     "WHERE travel_record.place_id = (:place_id)")
   fun getSpotPlace(place_id: String): SpotStore?
 
-  @Query("SELECT * FROM travel_record INNER JOIN spot_image ON travel_record.place_id WHERE date = (:date)")
+  @Query("SELECT * FROM travel_record WHERE date LIKE '%' || :date")
   fun getSpotData(date: Date): List<SpotStore>
 
   @Delete

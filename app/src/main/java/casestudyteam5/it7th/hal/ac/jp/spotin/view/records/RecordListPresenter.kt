@@ -4,6 +4,7 @@ import android.util.Log
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotDataSource
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotRepository
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotStore
+import java.util.Date
 
 class RecordListPresenter(
   val view: RecordListContract.View,
@@ -36,5 +37,17 @@ class RecordListPresenter(
 
   override fun deleteTravelRecord(place_id: String) {
     //spotRepository.deleteSpot()
+  }
+
+  override fun sortDateList(date: Date) {
+    spotRepository.getSpotDate(date, object : SpotDataSource.LoadSpotCallback {
+      override fun onLoadSuccess(travelRecordList: List<SpotStore>) {
+        view.showList(travelRecordList)
+      }
+
+      override fun onLoadFailed() {
+        view.showNoRecordMessage()
+      }
+    })
   }
 }

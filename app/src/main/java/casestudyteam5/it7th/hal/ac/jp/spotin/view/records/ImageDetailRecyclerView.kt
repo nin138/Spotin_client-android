@@ -13,12 +13,12 @@ import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotStore
 import casestudyteam5.it7th.hal.ac.jp.spotin.util.FlickListener
 
-class ImageDetailRecycler(
+class ImageDetailRecyclerView(
   val imageDetailFragment: ImageDetailFragment,
   private val context: Context,
   spotStore: SpotStore
 ) :
-  RecyclerView.Adapter<ImageDetailRecycler.ViewHolder>() {
+  RecyclerView.Adapter<ImageDetailRecyclerView.ViewHolder>() {
 
   private var mList = spotStore.spotImageList
 

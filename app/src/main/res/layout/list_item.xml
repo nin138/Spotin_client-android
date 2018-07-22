@@ -11,14 +11,15 @@
 
     <TextView
         android:id="@+id/recordItemDate"
-        android:layout_width="match_parent"
+        android:layout_width="82dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="day" />
 
     <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
+        android:layout_width="310dp"
         android:layout_height="306dp"
+        android:layout_gravity="right"
         android:orientation="vertical"
         card_view:cardUseCompatPadding="true">
 
@@ -28,22 +29,23 @@
 
             <TextView
                 android:id="@+id/recordItemPlace"
-                android:layout_width="341dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/recordItemImage"
-                android:layout_marginStart="-69dp"
-                android:gravity="center_horizontal"
+                android:background="#8ef0ff"
+                android:paddingLeft="10dp"
                 android:text="PlaceName"
+                android:textColor="@android:color/white"
                 android:textSize="20dp" />
 
             <TextView
 
                 android:id="@+id/recordItemComment"
-                android:layout_width="174dp"
+                android:layout_width="295dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignStart="@+id/recordItemImage"
+                android:layout_alignStart="@+id/nest_recycler"
+                android:layout_below="@+id/nest_recycler"
                 android:text="comment:" />
 
             <android.support.v7.widget.RecyclerView

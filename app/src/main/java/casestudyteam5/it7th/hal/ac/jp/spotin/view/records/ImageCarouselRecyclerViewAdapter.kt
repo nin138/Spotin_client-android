@@ -11,12 +11,12 @@ import android.widget.ImageView
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotStore
 
-class HorizontalRecyclerViewAdapter(
+class ImageCarouselRecyclerViewAdapter(
   private val context: Context,
   private val store: SpotStore,
   private val imageClickListener: ViewHolder.OnImageClickListener
 ) :
-  RecyclerView.Adapter<HorizontalRecyclerViewAdapter.ViewHolder>() {
+  RecyclerView.Adapter<ImageCarouselRecyclerViewAdapter.ViewHolder>() {
 
   private var mList = store.spotImageList
 
