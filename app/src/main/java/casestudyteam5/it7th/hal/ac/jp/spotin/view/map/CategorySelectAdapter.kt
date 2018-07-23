@@ -4,15 +4,17 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewParent
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
-import casestudyteam5.it7th.hal.ac.jp.spotin.R.layout.*
-import kotlinx.android.synthetic.main.category_select_model.view.*
+import casestudyteam5.it7th.hal.ac.jp.spotin.R.layout.category_select_model
 
-class CategorySelectAdapter(internal var c: Context, internal var categorys: Array<String>, internal var images: Array<Int>) : BaseAdapter() {
+class CategorySelectAdapter(
+  internal var c: Context,
+  internal var categorys: Array<String>,
+  internal var images: Array<Int>
+) : BaseAdapter() {
 
   override fun getCount(): Int {
     return categorys.size

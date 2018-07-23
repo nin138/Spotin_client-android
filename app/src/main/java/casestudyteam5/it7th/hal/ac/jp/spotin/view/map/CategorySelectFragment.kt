@@ -2,18 +2,14 @@ package casestudyteam5.it7th.hal.ac.jp.spotin.view.map
 
 import android.app.DialogFragment
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.GridView
-import android.widget.TextView
-import android.widget.Toast
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
-import casestudyteam5.it7th.hal.ac.jp.spotin.view.main.MainActivity
 
-class CategorySelectFragment: DialogFragment(){
+class CategorySelectFragment : DialogFragment() {
 
   private lateinit var gv: GridView
   private val categorys: Array<String> = arrayOf(
@@ -49,9 +45,7 @@ class CategorySelectFragment: DialogFragment(){
 
     gv = rootView.findViewById(R.id.categorySelectGridView)
     dialog.setTitle("Category select")
-    gv.adapter = CategorySelectAdapter(activity.applicationContext,categorys,images)
-
-
+    gv.adapter = CategorySelectAdapter(activity.applicationContext, categorys, images)
 
     gv.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, position, id ->
       //TODO カテゴリーセレクト時の処理

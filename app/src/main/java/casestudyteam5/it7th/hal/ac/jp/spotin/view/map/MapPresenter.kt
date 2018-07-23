@@ -88,5 +88,4 @@ class MapPresenter @Inject constructor(
       if (location != null) onLocationUpdated(LatLng(location.latitude, location.longitude))
     }
   }
-
 }

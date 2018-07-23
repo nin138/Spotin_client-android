@@ -4,8 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.entity.Spot
@@ -35,7 +33,6 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
   @Inject
   lateinit var presenter: MapPresenter
 
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_map)
@@ -43,8 +40,8 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
       .findFragmentById(R.id.map) as SupportMapFragment
     mapFragment.getMapAsync(this)
 
-    map_category.setOnClickListener{
-      CategorySelectFragment().show(fragmentManager,"CategorySelect")
+    map_category.setOnClickListener {
+      CategorySelectFragment().show(fragmentManager, "CategorySelect")
     }
   }
 
