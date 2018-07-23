@@ -18,13 +18,12 @@ class MapPresenter @Inject constructor(
   private val view: MapActivity,
   private val spotApi: SpotApi
 ) : MapContract.Presenter {
-
   data class MarkerData(val spot: Spot, val marker: Marker)
   private var markerList: List<MarkerData> = listOf()
   private var location: LatLng? = null
   private var job: Job? = null
 
-  var selectedCategory = "restaurant"
+  var selectedCategory = "amusement_park"
     set(category) {
       field = category
       if (location != null) updateSpots(location!!)
@@ -40,6 +39,7 @@ class MapPresenter @Inject constructor(
   }
 
   override fun onLocationUpdated(location: LatLng) {
+
     view.updateYouAreHere(location)
     this.location = location
     updateSpots(location)
@@ -88,4 +88,5 @@ class MapPresenter @Inject constructor(
       if (location != null) onLocationUpdated(LatLng(location.latitude, location.longitude))
     }
   }
+
 }

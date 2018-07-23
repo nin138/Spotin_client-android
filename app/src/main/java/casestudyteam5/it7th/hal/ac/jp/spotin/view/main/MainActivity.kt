@@ -5,7 +5,9 @@ import android.support.v4.app.FragmentActivity
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
+import android.support.v4.app.FragmentTransaction
 import casestudyteam5.it7th.hal.ac.jp.spotin.view.addrecord.AddRecordActivity
+import casestudyteam5.it7th.hal.ac.jp.spotin.view.map.CategorySelectFragment
 import casestudyteam5.it7th.hal.ac.jp.spotin.view.map.MapActivity
 import casestudyteam5.it7th.hal.ac.jp.spotin.view.records.TravelRecordListActivity
 
@@ -31,5 +33,6 @@ class MainActivity : FragmentActivity() {
       val intent = Intent(this@MainActivity, TravelRecordListActivity::class.java)
       startActivity(intent)
     }
+
   }
 }

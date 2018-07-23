@@ -1,19 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context=".view.map.MapActivity">
 
-  <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/map"
-    tools:context=".MainActivity"
-    map:uiZoomControls = "true"
-    android:name="com.google.android.gms.maps.SupportMapFragment" />
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="10"
+        map:uiZoomControls="true"
+        tools:context=".MainActivity"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="180dp"
+        />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="100px"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_weight="1"
+        android:background="#ffffff"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarPopupTheme"
+        tools:layout_editor_absoluteY="474dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+      <LinearLayout
+        android:layout_width="80px"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <ImageView
+          android:id="@+id/map_home"
+          android:layout_width="60px"
+          android:layout_height="60px"
+          android:layout_gravity="center"
+          android:src="@drawable/home" />
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="home"
+          android:textAlignment="center"
+          android:textSize="20px"/>
+      </LinearLayout>
+
+
+      <LinearLayout
+      android:layout_width="80px"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:layout_weight="1">
+        <ImageView
+        android:id="@+id/map_category"
+        android:layout_width="60px"
+        android:layout_height="60px"
+        android:layout_gravity="center"
+        android:src="@drawable/category" />
+        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="category"
+        android:textAlignment="center"
+        android:textSize="20px"/>
+      </LinearLayout>
+
+      <LinearLayout
+      android:layout_width="80px"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:layout_weight="1">
+        <ImageView
+        android:id="@+id/map_diary"
+        android:layout_width="60px"
+        android:layout_height="60px"
+        android:layout_gravity="center"
+        android:src="@drawable/diary" />
+        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="diary"
+        android:textAlignment="center"
+        android:textSize="20px"/>
+      </LinearLayout>
+      <LinearLayout
+      android:layout_width="80px"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:layout_weight="1">
+        <ImageView
+        android:id="@+id/map_settings"
+        android:layout_width="60px"
+        android:layout_height="60px"
+        android:layout_gravity="center"
+        android:src="@drawable/home" />
+        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="settings"
+        android:textAlignment="center"
+        android:textSize="20px"/>
+      </LinearLayout>
+     </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
+  </LinearLayout>
+
+
+</RelativeLayout>
