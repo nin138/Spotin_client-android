@@ -25,10 +25,10 @@ class MapPresenter @Inject constructor(
   private var job: Job? = null
 
   var selectedCategory = "restaurant"
-    set(category) {
-      field = category
-      if (location != null) updateSpots(location!!)
-    }
+  set(category) {
+    field = category
+    if (location != null) updateSpots(location!!)
+  }
 
   override fun onMarkerAdded(list: List<MarkerData>) {
     markerList = markerList.plus(list)

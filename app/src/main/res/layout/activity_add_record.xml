@@ -58,7 +58,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:background="@android:color/background_light">
@@ -70,21 +70,21 @@
 
             <ImageView
                 android:id="@+id/cameraBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="55dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                app:srcCompat="@android:drawable/ic_menu_camera" />
+                app:srcCompat="@drawable/camera" />
 
             <ImageView
                 android:id="@+id/storageBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                app:srcCompat="@android:drawable/ic_menu_gallery" />
+                app:srcCompat="@drawable/imageselect" />
 
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
