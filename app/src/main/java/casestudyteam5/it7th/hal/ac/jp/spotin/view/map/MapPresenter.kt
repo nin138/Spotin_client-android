@@ -8,6 +8,7 @@ import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.SpotApi
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.entity.Spot
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch

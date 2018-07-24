@@ -8,12 +8,26 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.GridView
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
+import kotlinx.android.synthetic.main.activity_map.*
 
 class CategorySelectFragment : DialogFragment() {
 
   private lateinit var gv: GridView
   private val categorys: Array<String> = arrayOf(
     "amusement_park",
+    "cafe",
+    "department",
+    "food",
+    "gym",
+    "mall",
+    "museum",
+    "police",
+    "restaurant",
+    "shop",
+    "spa",
+    "zoo")
+  private val categoryName: Array<String> = arrayOf(
+    "amusement\npark",
     "cafe",
     "department",
     "food",
@@ -42,21 +56,13 @@ class CategorySelectFragment : DialogFragment() {
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
     var rootView: View = inflater!!.inflate(R.layout.flagment_category_select, null)
+    var mapAct = activity as MapActivity
 
     gv = rootView.findViewById(R.id.categorySelectGridView)
     dialog.setTitle("Category select")
-    gv.adapter = CategorySelectAdapter(activity.applicationContext, categorys, images)
+    gv.adapter = CategorySelectAdapter(activity.applicationContext, categorys, categoryName, images)
 
     gv.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, position, id ->
-      //TODO カテゴリーセレクト時の処理
-//     val mainAct = activity as MainActivity
-//     val textview = mainAct.findViewById<TextView>(R.id.category_test)
-//      textview.text = (categorys[position])
-
-      /*
-      mapActivityからボタンなりで  CategorySelectFragment().show(fragmentManager,"CategorySelect")
-       */
-      var mapAct = activity as MapActivity
       mapAct.presenter.selectedCategory = categorys[position]
       dismiss()
     }

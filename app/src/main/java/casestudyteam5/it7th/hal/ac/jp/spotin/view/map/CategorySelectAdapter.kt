@@ -13,6 +13,7 @@ import casestudyteam5.it7th.hal.ac.jp.spotin.R.layout.category_select_model
 class CategorySelectAdapter(
   internal var c: Context,
   internal var categorys: Array<String>,
+  internal var categoryName: Array<String>,
   internal var images: Array<Int>
 ) : BaseAdapter() {
 
@@ -37,7 +38,9 @@ class CategorySelectAdapter(
     val imgView = convertView!!.findViewById<ImageView>(R.id.categoryIconImage)
     val txtView = convertView.findViewById<TextView>(R.id.categoryName)
     imgView.setImageResource(images[position])
-    txtView.text = categorys[position]
+    txtView.text = categoryName[position]
+
+    //TODO 現在のカテゴリについての相談
 
     return convertView
   }

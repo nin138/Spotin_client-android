@@ -10,6 +10,7 @@ import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.entity.Spot
 import casestudyteam5.it7th.hal.ac.jp.spotin.view.addrecord.AddRecordActivity
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.gps.GPS
 import casestudyteam5.it7th.hal.ac.jp.spotin.util.PermissionUtil
+import casestudyteam5.it7th.hal.ac.jp.spotin.view.records.TravelRecordListActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -43,6 +44,11 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
     map_category.setOnClickListener {
       CategorySelectFragment().show(fragmentManager, "CategorySelect")
     }
+    map_diary.setOnClickListener{
+      val intent = Intent(this@MapActivity, TravelRecordListActivity::class.java)
+      startActivity(intent)
+    }
+
   }
 
   override fun onResume() {
@@ -136,4 +142,6 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
       .strokeWidth(5f)
       .fillColor(0x30ff0000)
   }
+
+
 }
