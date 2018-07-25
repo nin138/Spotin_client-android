@@ -8,6 +8,7 @@ import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.SpotApi
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.entity.Spot
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
@@ -18,17 +19,17 @@ class MapPresenter @Inject constructor(
   private val view: MapActivity,
   private val spotApi: SpotApi
 ) : MapContract.Presenter {
-
   data class MarkerData(val spot: Spot, val marker: Marker)
   private var markerList: List<MarkerData> = listOf()
   private var location: LatLng? = null
   private var job: Job? = null
 
-  var selectedCategory = "restaurant"
-  set(category) {
-    field = category
-    if (location != null) updateSpots(location!!)
-  }
+
+  var selectedCategory = "amusement_park"
+    set(category) {
+      field = category
+      if (location != null) updateSpots(location!!)
+    }
 
   override fun onMarkerAdded(list: List<MarkerData>) {
     markerList = markerList.plus(list)
@@ -40,6 +41,7 @@ class MapPresenter @Inject constructor(
   }
 
   override fun onLocationUpdated(location: LatLng) {
+
     view.updateYouAreHere(location)
     this.location = location
     updateSpots(location)

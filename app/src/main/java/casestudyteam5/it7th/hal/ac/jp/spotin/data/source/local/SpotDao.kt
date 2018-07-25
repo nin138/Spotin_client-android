@@ -25,12 +25,10 @@ import java.util.Date
   @Query("SELECT * FROM travel_record")
   fun getAllSpot(): List<SpotStore>
 
-  @Query ("SELECT * FROM travel_record " +
-    "INNER JOIN spot_image ON travel_record.place_id = spot_image.place_id " +
-    "WHERE travel_record.place_id = (:place_id)")
+  @Query ("SELECT * FROM travel_record WHERE travel_record.place_id = (:place_id)")
   fun getSpotPlace(place_id: String): SpotStore?
 
-  @Query("SELECT * FROM travel_record WHERE date LIKE '%' || :date")
+  @Query("SELECT * FROM travel_record WHERE date = (:date) ORDER BY date")
   fun getSpotData(date: Date): List<SpotStore>
 
   @Delete

@@ -9,6 +9,7 @@ import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.entity.Spot
 import casestudyteam5.it7th.hal.ac.jp.spotin.view.addrecord.AddRecordActivity
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.gps.GPS
 import casestudyteam5.it7th.hal.ac.jp.spotin.util.PermissionUtil
+import casestudyteam5.it7th.hal.ac.jp.spotin.view.records.TravelRecordListActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -20,7 +21,10 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.android.synthetic.main.activity_map.*
 import javax.inject.Inject
+import android.preference.PreferenceManager
+import casestudyteam5.it7th.hal.ac.jp.spotin.view.Setting.SettingActivity
 
 class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -37,6 +41,19 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
     val mapFragment = supportFragmentManager
       .findFragmentById(R.id.map) as SupportMapFragment
     mapFragment.getMapAsync(this)
+
+    map_home.setOnClickListener { onResume() }
+    map_category.setOnClickListener {
+      CategorySelectFragment().show(fragmentManager, "CategorySelect")
+    }
+    map_diary.setOnClickListener {
+      val intent = Intent(this@MapActivity, TravelRecordListActivity::class.java)
+      startActivity(intent)
+    }
+    map_setting.setOnClickListener {
+      val intent = Intent(this@MapActivity, SettingActivity::class.java)
+      startActivityForResult(intent, SETTING)
+    }
   }
 
   override fun onResume() {
@@ -123,11 +140,25 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
   }
 
   private fun createCircleOption(position: LatLng): CircleOptions {
+    //設定から読み出し
+    val radius = PreferenceManager.getDefaultSharedPreferences(this)
+      .getString("radius", "200.0").toDouble()
     return CircleOptions()
       .center(position)
-      .radius(200.0)
+      .radius(radius)
       .strokeColor(Color.BLACK)
       .strokeWidth(5f)
       .fillColor(0x30ff0000)
+  }
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    if (requestCode == SETTING) {
+      //TODO:再描画
+    }
+  }
+
+  companion object {
+    const val SETTING = 200
   }
 }
