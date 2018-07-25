@@ -40,8 +40,8 @@
 
     <activity android:name=".view.list.ListActivity" />
     <activity android:name="casestudyteam5.it7th.hal.ac.jp.spotin.view.records.TravelRecordListActivity" />
-    <activity android:name="casestudyteam5.it7th.hal.ac.jp.spotin.view.map.MapActivity" />
-    <activity android:name="casestudyteam5.it7th.hal.ac.jp.spotin.view.addrecord.AddRecordActivity"></activity>
+    <activity android:name="casestudyteam5.it7th.hal.ac.jp.spotin.view.map.MapActivity"/>
+    <activity android:name="casestudyteam5.it7th.hal.ac.jp.spotin.view.addrecord.AddRecordActivity"/>
   </application>
 
 </manifest>
