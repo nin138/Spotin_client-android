@@ -82,30 +82,20 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
   }
 
   override fun onMarkerClick(marker: Marker): Boolean {
-
-    val builder = AlertDialog.Builder(this, R.style.dialog_setting)
     val inflater: LayoutInflater = LayoutInflater.from(this)
-    val content: View = inflater.inflate(R.layout.dialog_setting, null)
+    val content = inflater.inflate(R.layout.dialog_setting, null)
+    val builder = AlertDialog.Builder(this, R.style.dialog_setting).setView(content).create()
+    builder.setCanceledOnTouchOutside(false)
+    builder.window.decorView
+      .startAnimation(AnimationUtils.loadAnimation(this, R.anim.in_animation))
 
-    builder.setView(content)
+    content.findViewById<TextView>(R.id.name)?.text = marker?.title
+    val add: Button = content.findViewById(R.id.add)
+    val cancel: Button = content.findViewById(R.id.cancel)
 
-    val tv: TextView = content?.findViewById(R.id.name)
-    val add: Button = content?.findViewById(R.id.add)
-    val cancel: Button = content?.findViewById(R.id.cancel)
-
-    tv.text = marker?.title
     add.setOnClickListener { marker?.let { presenter.onMarkerClicked(it) } }
-
-    val dBuilder = builder.create()
-    dBuilder.setCanceledOnTouchOutside(false)
-
-    var viewGroup = dBuilder.window.decorView
-    viewGroup.startAnimation(AnimationUtils.loadAnimation(this, R.anim.in_animation))
-
-    dBuilder.show()
-
-    cancel.setOnClickListener { dBuilder.dismiss() }
-
+    cancel.setOnClickListener { builder.dismiss() }
+    builder.show()
     return false
   }
 
