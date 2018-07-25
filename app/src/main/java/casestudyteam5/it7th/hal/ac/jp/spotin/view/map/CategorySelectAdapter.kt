@@ -9,20 +9,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import casestudyteam5.it7th.hal.ac.jp.spotin.R.layout.category_select_model
+import casestudyteam5.it7th.hal.ac.jp.spotin.data.Category
 
 class CategorySelectAdapter(
-  internal var c: Context,
-  internal var categorys: Array<String>,
-  internal var categoryName: Array<String>,
-  internal var images: Array<Int>
+  private var c: Context
 ) : BaseAdapter() {
 
   override fun getCount(): Int {
-    return categorys.size
+    return Category.values().size
   }
 
   override fun getItem(position: Int): Any {
-    return categorys[position]
+    return Category.values()[position]
   }
 
   override fun getItemId(position: Int): Long {
@@ -37,10 +35,10 @@ class CategorySelectAdapter(
     }
     val imgView = convertView!!.findViewById<ImageView>(R.id.categoryIconImage)
     val txtView = convertView.findViewById<TextView>(R.id.categoryName)
-    imgView.setImageResource(images[position])
-    txtView.text = categoryName[position]
 
-    //TODO 現在のカテゴリについての相談
+    val cate = Category.values()[position]
+    imgView.setImageResource(cate.image)
+    txtView.text = cate.nameForText
 
     return convertView
   }

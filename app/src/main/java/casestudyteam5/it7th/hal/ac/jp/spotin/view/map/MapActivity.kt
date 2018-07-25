@@ -44,11 +44,10 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
     map_category.setOnClickListener {
       CategorySelectFragment().show(fragmentManager, "CategorySelect")
     }
-    map_diary.setOnClickListener{
+    map_diary.setOnClickListener {
       val intent = Intent(this@MapActivity, TravelRecordListActivity::class.java)
       startActivity(intent)
     }
-
   }
 
   override fun onResume() {
@@ -142,6 +141,4 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
       .strokeWidth(5f)
       .fillColor(0x30ff0000)
   }
-
-
 }
