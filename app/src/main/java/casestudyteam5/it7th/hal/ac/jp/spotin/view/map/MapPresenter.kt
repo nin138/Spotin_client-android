@@ -3,6 +3,7 @@ package casestudyteam5.it7th.hal.ac.jp.spotin.view.map
 import android.location.Location
 import android.location.LocationListener
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.SpotApi
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.entity.Spot
@@ -23,7 +24,6 @@ class MapPresenter @Inject constructor(
   private var markerList: List<MarkerData> = listOf()
   private var location: LatLng? = null
   private var job: Job? = null
-
 
   var selectedCategory = "amusement_park"
     set(category) {
@@ -53,7 +53,10 @@ class MapPresenter @Inject constructor(
 
   private fun updateSpots(location: LatLng) {
     job = launch {
-      val spots = spotApi.getSpotList(selectedCategory, location.latitude, location.longitude)
+      val radius = PreferenceManager.getDefaultSharedPreferences(view)
+        .getString("radius", "200").toDouble().toInt()
+      Log.d("radius", radius.toString())
+      val spots = spotApi.getSpotList(selectedCategory, location.latitude, location.longitude, radius)
       val markersScheduledForRemoval = mutableListOf<Marker>()
       val markers = markerList.filter {
         if (spots.spot.find { spot -> it.spot.place_id == spot.place_id } == null) {

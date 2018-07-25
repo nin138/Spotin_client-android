@@ -1,9 +1,14 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin.view.map
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.animation.AnimationUtils
+import android.widget.Button
+import android.widget.TextView
 import casestudyteam5.it7th.hal.ac.jp.spotin.R
 import casestudyteam5.it7th.hal.ac.jp.spotin.service.api.entity.Spot
 import casestudyteam5.it7th.hal.ac.jp.spotin.view.addrecord.AddRecordActivity
@@ -82,8 +87,25 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
     map.moveCamera(CameraUpdateFactory.zoomTo(17f))
   }
 
-  override fun onMarkerClick(marker: Marker?): Boolean {
-    marker?.let { presenter.onMarkerClicked(it) }
+  override fun onMarkerClick(marker: Marker): Boolean {
+    val inflater: LayoutInflater = LayoutInflater.from(this)
+    val content = inflater.inflate(R.layout.dialog_setting, null)
+    val builder = AlertDialog.Builder(this, R.style.dialog_setting).setView(content).create()
+    builder.setCanceledOnTouchOutside(false)
+    builder.window.decorView
+      .startAnimation(AnimationUtils.loadAnimation(this, R.anim.in_animation))
+
+    content.findViewById<TextView>(R.id.name)?.text = marker.title
+    content.findViewById<TextView>(R.id.categoryName)?.text = presenter.selectedCategory
+    val add: Button = content.findViewById(R.id.add)
+    val cancel: Button = content.findViewById(R.id.cancel)
+
+    add.setOnClickListener {
+      marker.let { presenter.onMarkerClicked(it) }
+      builder.dismiss()
+    }
+    cancel.setOnClickListener { builder.dismiss() }
+    builder.show()
     return false
   }
 
@@ -123,6 +145,9 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
   private fun startGPS() {
     Log.d("gps", "started")
     val location = gps?.getLastLocation()
+    //設定から読み出し
+    val radius = PreferenceManager.getDefaultSharedPreferences(this)
+      .getString("radius", "200").toDouble().toInt()
     if (location != null) presenter.onLocationUpdated(LatLng(location.latitude, location.longitude))
     gps?.listen(presenter.locationListener)
   }
@@ -142,7 +167,7 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
   private fun createCircleOption(position: LatLng): CircleOptions {
     //設定から読み出し
     val radius = PreferenceManager.getDefaultSharedPreferences(this)
-      .getString("radius", "200.0").toDouble()
+      .getString("radius", "200").toDouble()
     return CircleOptions()
       .center(position)
       .radius(radius)
@@ -155,6 +180,7 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
     super.onActivityResult(requestCode, resultCode, data)
     if (requestCode == SETTING) {
       //TODO:再描画
+      startGPS()
     }
   }
 

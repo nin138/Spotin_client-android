@@ -26,7 +26,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="80px"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:background="#ffffff"
@@ -35,87 +35,95 @@
         android:theme="?attr/actionBarPopupTheme"
         tools:layout_editor_absoluteY="474dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
       <LinearLayout
-          android:id="@+id/map_home"
-        android:layout_width="60px"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="1">
-        <ImageView
-            android:layout_width="40px"
-          android:layout_height="40px"
-          android:layout_gravity="center"
-          android:src="@drawable/home" />
-        <TextView
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="home"
-          android:textAlignment="center"
-            android:textSize="16px"/>
-      </LinearLayout>
+          android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/map_home"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+          <ImageView
+              android:layout_width="80px"
+              android:layout_height="80px"
+              android:layout_gravity="center"
+              android:src="@drawable/home" />
+
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="home"
+              android:textAlignment="center"
+              android:textSize="9sp" />
+        </LinearLayout>
 
 
-      <LinearLayout
-          android:id="@+id/map_category"
-      android:layout_width="80px"
-      android:layout_height="match_parent"
-      android:orientation="vertical"
-      android:layout_weight="1">
-        <ImageView
-            android:layout_width="40px"
-            android:layout_height="40px"
-        android:layout_gravity="center"
-        android:src="@drawable/category" />
-        <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="category"
-        android:textAlignment="center"
-            android:textSize="16px"/>
-      </LinearLayout>
+        <LinearLayout
+            android:id="@+id/map_category"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-      <LinearLayout
-          android:id="@+id/map_diary"
-      android:layout_width="80px"
-      android:layout_height="match_parent"
-      android:orientation="vertical"
-      android:layout_weight="1">
-        <ImageView
-        android:layout_width="40px"
-            android:layout_height="40px"
-        android:layout_gravity="center"
-        android:src="@drawable/diary" />
-        <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="diary"
-        android:textAlignment="center"
-            android:textSize="16px"/>
-      </LinearLayout>
-      <LinearLayout
-          android:id="@+id/map_setting"
-      android:layout_width="80px"
-      android:layout_height="match_parent"
-      android:orientation="vertical"
-      android:layout_weight="1">
+          <ImageView
+              android:layout_width="80px"
+              android:layout_height="80px"
+              android:layout_gravity="center"
+              android:src="@drawable/category" />
 
-        <ImageView
-            android:layout_width="40px"
-            android:layout_height="13dp"
-            android:layout_gravity="center"
-            android:src="@drawable/setting" />
-        <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="setting"
-        android:textAlignment="center"
-        android:textSize="16px"/>
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="category"
+              android:textAlignment="center"
+              android:textSize="9sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/map_diary"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+          <ImageView
+              android:layout_width="80px"
+              android:layout_height="80px"
+              android:layout_gravity="center"
+              android:src="@drawable/diary" />
+
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="diary"
+              android:textAlignment="center"
+              android:textSize="9sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/map_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+          <ImageView
+              android:layout_width="80px"
+              android:layout_height="80px"
+              android:layout_gravity="center"
+              android:src="@drawable/setting" />
+
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="setting"
+              android:textAlignment="center"
+              android:textSize="9sp" />
+        </LinearLayout>
       </LinearLayout>
-     </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
   </LinearLayout>

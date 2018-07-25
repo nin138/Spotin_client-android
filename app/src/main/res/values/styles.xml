@@ -8,4 +8,24 @@
     <item name="colorAccent">@color/colorAccent</item>
   </style>
 
+  <style name="dialog_setting" parent="@android:style/Theme.Dialog">
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowAnimationStyle">@style/customDialogAnimation</item>
+  </style>
+
+  <style name="customDialogAnimation">
+    <item name="android:windowEnterAnimation">@anim/in_animation</item>
+  </style>
+
+  //起動時のスプラッシュ画面
+  <style name="SplashTheme" parent="AppTheme">
+    <item name="android:windowBackground">@drawable/splash</item>
+  </style>
+
+  <style name="AppTheme.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+
 </resources>
