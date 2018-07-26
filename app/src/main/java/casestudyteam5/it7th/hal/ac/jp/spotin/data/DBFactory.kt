@@ -9,6 +9,6 @@ import casestudyteam5.it7th.hal.ac.jp.spotin.util.AppExecutor
 object DBFactory {
   fun provideSpotRepository(context: Context): SpotRepository {
     val database = SpotDatabase.getInstance(context)
-    return SpotRepository.getInstance(database.spotDao(), AppExecutor())
+    return SpotRepository.getInstance(database.spotDao(), database.locationDao(), AppExecutor())
   }
 }

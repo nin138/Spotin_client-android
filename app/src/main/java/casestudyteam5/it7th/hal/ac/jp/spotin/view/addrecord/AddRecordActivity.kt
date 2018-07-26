@@ -125,7 +125,6 @@ class AddRecordActivity :
     super.onActivityResult(requestCode, resultCode, data)
     if (requestCode == CHOOSERS) {
       data?.data?.let { imageUri = it } ?: kotlin.run { if (!presenter.isFileExist(imageUri)) return }
-      //TODO: presenterにリスト捜査用のメソッド追加
       presenter.editImageList(presenter.createImageSpot(place_id, imageUri))
       presenter.showImage()
     }

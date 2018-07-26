@@ -8,6 +8,7 @@ import casestudyteam5.it7th.hal.ac.jp.spotin.data.TravelRecord
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotDataSource
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotRepository
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotStore
+import casestudyteam5.it7th.hal.ac.jp.spotin.util.DateUtil
 import java.util.Date
 import java.io.File
 
@@ -69,7 +70,8 @@ class AddRecordPresenter (
       }
 
       override fun onGetFailedSpot() {
-        createTravelRecord(place_id, comment, place_name, date = Date())
+        //val datet = DateUtil().toDate(Date())
+        createTravelRecord(place_id, comment, place_name, DateUtil().toDate(Date())!!)
         imagepassList.let { createImageRecord(place_id, imagepassList) }
       }
     })
