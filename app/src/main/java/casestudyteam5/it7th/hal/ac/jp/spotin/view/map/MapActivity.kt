@@ -6,6 +6,9 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+
+import android.view.View
+
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.TextView
@@ -95,6 +98,7 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
     builder.window.decorView
       .startAnimation(AnimationUtils.loadAnimation(this, R.anim.in_animation))
 
+
     content.findViewById<TextView>(R.id.name)?.text = marker.title
     content.findViewById<TextView>(R.id.categoryName)?.text = presenter.selectedCategory
     val add: Button = content.findViewById(R.id.add)
@@ -104,6 +108,7 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
       marker.let { presenter.onMarkerClicked(it) }
       builder.dismiss()
     }
+
     cancel.setOnClickListener { builder.dismiss() }
     builder.show()
     return false
