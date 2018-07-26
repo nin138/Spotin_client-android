@@ -6,7 +6,9 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+
 import android.view.View
+
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.TextView
@@ -29,6 +31,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_map.*
 import javax.inject.Inject
+import android.preference.PreferenceManager
+import casestudyteam5.it7th.hal.ac.jp.spotin.view.Setting.SettingActivity
 
 class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -46,12 +50,17 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
       .findFragmentById(R.id.map) as SupportMapFragment
     mapFragment.getMapAsync(this)
 
+    map_home.setOnClickListener { onResume() }
     map_category.setOnClickListener {
       CategorySelectFragment().show(fragmentManager, "CategorySelect")
     }
     map_diary.setOnClickListener {
       val intent = Intent(this@MapActivity, TravelRecordListActivity::class.java)
       startActivity(intent)
+    }
+    map_setting.setOnClickListener {
+      val intent = Intent(this@MapActivity, SettingActivity::class.java)
+      startActivityForResult(intent, SETTING)
     }
   }
 
@@ -89,11 +98,17 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
     builder.window.decorView
       .startAnimation(AnimationUtils.loadAnimation(this, R.anim.in_animation))
 
-    content.findViewById<TextView>(R.id.name)?.text = marker?.title
+
+    content.findViewById<TextView>(R.id.name)?.text = marker.title
+    content.findViewById<TextView>(R.id.categoryName)?.text = presenter.selectedCategory
     val add: Button = content.findViewById(R.id.add)
     val cancel: Button = content.findViewById(R.id.cancel)
 
-    add.setOnClickListener { marker?.let { presenter.onMarkerClicked(it) } }
+    add.setOnClickListener {
+      marker.let { presenter.onMarkerClicked(it) }
+      builder.dismiss()
+    }
+
     cancel.setOnClickListener { builder.dismiss() }
     builder.show()
     return false
@@ -135,6 +150,9 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
   private fun startGPS() {
     Log.d("gps", "started")
     val location = gps?.getLastLocation()
+    //設定から読み出し
+    val radius = PreferenceManager.getDefaultSharedPreferences(this)
+      .getString("radius", "200").toDouble().toInt()
     if (location != null) presenter.onLocationUpdated(LatLng(location.latitude, location.longitude))
     gps?.listen(presenter.locationListener)
   }
@@ -152,11 +170,26 @@ class MapActivity : DaggerAppCompatActivity(), MapContract.View, OnMapReadyCallb
   }
 
   private fun createCircleOption(position: LatLng): CircleOptions {
+    //設定から読み出し
+    val radius = PreferenceManager.getDefaultSharedPreferences(this)
+      .getString("radius", "200").toDouble()
     return CircleOptions()
       .center(position)
-      .radius(200.0)
+      .radius(radius)
       .strokeColor(Color.BLACK)
       .strokeWidth(5f)
       .fillColor(0x30ff0000)
+  }
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    if (requestCode == SETTING) {
+      //TODO:再描画
+      startGPS()
+    }
+  }
+
+  companion object {
+    const val SETTING = 200
   }
 }

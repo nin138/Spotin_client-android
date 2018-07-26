@@ -10,6 +10,7 @@ import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotRepository
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotStore
 import java.util.Date
 import java.io.File
+import java.text.SimpleDateFormat
 
 class AddRecordPresenter (
   val context: Context,
@@ -30,7 +31,6 @@ class AddRecordPresenter (
     imagepass?.let {
       val path = getPath(it)
       val file = File(path)
-      //val file = Uri.fromFile(File(path))
       if (file.exists()) return true
     }
     return false
@@ -69,7 +69,8 @@ class AddRecordPresenter (
       }
 
       override fun onGetFailedSpot() {
-        createTravelRecord(place_id, comment, place_name, date = Date())
+        val date = SimpleDateFormat("yyyy/MM/dd").format(Date())
+        createTravelRecord(place_id, comment, place_name, SimpleDateFormat("yyyy/MM/dd").parse(date))
         imagepassList.let { createImageRecord(place_id, imagepassList) }
       }
     })

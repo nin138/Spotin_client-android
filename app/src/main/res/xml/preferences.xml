@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="NetWork Setting">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="switch_preference"
+            android:title="NetWork"
+            android:summary="Background communication limit"/>
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="switch_preference_1"
+            android:title="GPS"
+            android:summary="GPS Permission"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Map Setting">
+
+        <EditTextPreference
+            android:key="Longitude"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Longitude"
+            android:summary="Default Longitude"/>
+        <EditTextPreference
+            android:key="Latitude"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Latitude"
+            android:summary="Default Latitude" />
+
+        <EditTextPreference
+            android:defaultValue="200.0"
+            android:key="radius"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="Default Radius"
+            android:title="Radius" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

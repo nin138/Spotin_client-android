@@ -1,8 +1,10 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin.view.records
 
+import android.util.Log
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotDataSource
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotRepository
 import casestudyteam5.it7th.hal.ac.jp.spotin.data.source.SpotStore
+import java.util.Date
 
 class RecordListPresenter(
   val view: RecordListContract.View,
@@ -24,7 +26,9 @@ class RecordListPresenter(
   }
 
   override fun openDetail(spot: SpotStore) {
-//    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    spot.spotImageList?.forEach {
+      Log.d("openDetail", it.image_pass)
+    }
   }
 
   override fun sortList(recordSortType: RecordSortType) {
@@ -33,5 +37,17 @@ class RecordListPresenter(
 
   override fun deleteTravelRecord(place_id: String) {
     //spotRepository.deleteSpot()
+  }
+
+  override fun sortDateList(date: Date) {
+    spotRepository.getSpotDate(date, object : SpotDataSource.LoadSpotCallback {
+      override fun onLoadSuccess(travelRecordList: List<SpotStore>) {
+        view.showList(travelRecordList)
+      }
+
+      override fun onLoadFailed() {
+        view.showNoRecordMessage()
+      }
+    })
   }
 }

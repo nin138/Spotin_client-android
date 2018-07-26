@@ -1,8 +1,7 @@
 package casestudyteam5.it7th.hal.ac.jp.spotin.view.records
 
 import android.content.Context
-import android.graphics.BitmapFactory
-import android.net.Uri
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,7 +11,8 @@ import java.text.SimpleDateFormat
 
 class RecyclerAdapter(
   private val context: Context,
-  private val itemClickListener: RecyclerViewHolder.ItemClickListener,
+  private val itemClickListener: RecyclerViewHolder.onItemClickListener,
+  private val imageClickListener: ImageCarouselRecyclerViewAdapter.ViewHolder.OnImageClickListener,
   private val itemList: List<SpotStore>
 ) : RecyclerView.Adapter<RecyclerViewHolder>() {
 
@@ -47,13 +47,11 @@ class RecyclerAdapter(
       it.itemPlaceName.text = itemList[position].travelRecord.place_name
       it.itemView.setOnClickListener { itemClickListener.onItemClick(it, itemList[position]) }
     }
-    if (itemList[position].spotImageList?.size != 0) {
-      val parcelFileDescriptor = context.contentResolver
-        .openFileDescriptor(Uri.parse(itemList.get(position).spotImageList?.get(0)?.image_pass), "r") ?: return
-      val fileDescriptor = parcelFileDescriptor.fileDescriptor
-      val bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor)
-      parcelFileDescriptor.close()
-      holder.itemImage.setImageBitmap(bitmap)
+    //nest recyclerview
+    itemList[position].let {
+      val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+      holder.nestRecycle.layoutManager = linearLayoutManager
+      holder.nestRecycle.adapter = ImageCarouselRecyclerViewAdapter(context, it, imageClickListener)
     }
   }
 }

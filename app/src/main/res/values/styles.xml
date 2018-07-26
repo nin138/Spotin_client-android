@@ -18,4 +18,15 @@
     <item name="android:windowEnterAnimation">@anim/in_animation</item>
   </style>
 
+  //起動時のスプラッシュ画面
+  <style name="SplashTheme" parent="AppTheme">
+    <item name="android:windowBackground">@drawable/splash</item>
+  </style>
+
+  <style name="AppTheme.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+
+
 </resources>
